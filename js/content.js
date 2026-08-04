@@ -2,7 +2,7 @@
 
 window.SITE_DEFAULTS = {
   meta: {
-    title: { en: "Danis — Web Developer", ru: "Данис — Web Developer" },
+    title: { en: "Danis — Web Developer", ru: "Данис — Веб-разработчик" },
     desc: {
       en: "Frontend developer with 4+ years of experience. Building fast, reliable and beautiful websites and web apps — from landing pages to complex web applications.",
       ru: "Фронтенд-разработчик с 4+ годами опыта. Создаю сайты и веб-приложения, которые решают задачи бизнеса."
@@ -32,11 +32,14 @@ window.SITE_DEFAULTS = {
 
   code: {
     name: { en: "Danis", ru: "Данис" },
-    role: "Frontend Developer",
+    role: { en: '"Frontend Developer"', ru: '"Фронтенд-разработчик"' },
     stack: '["React", "TypeScript", "Next.js"]',
-    experience: "4+ years",
+    experience: { en: '"4+ years"', ru: '"4+ года"' },
     available: true,
-    status: { en: "Open to new projects", ru: "Открыт для новых проектов" }
+    status: { en: '"Open to new projects"', ru: '"Открыт для новых проектов"' },
+    comment: { en: "// portfolio.js — main config", ru: "// portfolio.js — основной конфиг" },
+    log: { en: '"Let\'s build something great!"', ru: '"Давайте создадим что-то великое!"' },
+    aria: { en: "developer.js code example", ru: "пример кода developer.js" }
   },
 
   nav: {
@@ -44,7 +47,11 @@ window.SITE_DEFAULTS = {
     about: { en: "About", ru: "Обо мне" },
     stack: { en: "Stack", ru: "Стек" },
     contact: { en: "Contact", ru: "Контакты" },
-    cta: { en: "Contact me", ru: "Связаться" }
+    cta: { en: "Contact me", ru: "Связаться" },
+    home: { en: "Danis — home", ru: "Данис — главная" },
+    menu: { en: "Main navigation", ru: "Основная навигация" },
+    open: { en: "Open menu", ru: "Открыть меню" },
+    lang: { en: "Language", ru: "Язык" }
   },
 
   stats: [
@@ -125,7 +132,7 @@ window.SITE_DEFAULTS = {
   },
 
   footer: {
-    copyright: { en: "© 2026 Danis — Web Developer", ru: "© 2026 Данис — Web Developer" },
+    copyright: { en: "© 2026 Danis — Web Developer", ru: "© 2026 Данис — Веб-разработчик" },
     socials: [
       { label: "GitHub", url: "https://github.com" },
       { label: "Telegram", url: "https://t.me" },

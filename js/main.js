@@ -162,18 +162,26 @@
   /* ============ Content & i18n ============ */
   const DEFAULTS = window.SITE_DEFAULTS;
   let CONTENT = DEFAULTS;
-  let currentLang = localStorage.getItem("danis-lang") || "en";
+  let currentLang = new URLSearchParams(location.search).get("lang") || localStorage.getItem("danis-lang") || "en";
   const langBtns = document.querySelectorAll(".lang-btn");
 
   function buildDict(lang) {
     const d = {};
-    for (const [k, v] of Object.entries(CONTENT)) {
-      if (v && typeof v === "object" && typeof v.en === "string" && typeof v.ru === "string") {
-        d[k] = v[lang];
-      } else if (typeof v === "string") {
-        d[k] = v;
+    function walk(prefix, node) {
+      if (node === null || typeof node !== "object") {
+        if (prefix) d[prefix] = typeof node === "string" ? node : String(node);
+        return;
+      }
+      if (Array.isArray(node)) return;
+      if (typeof node.en === "string" && typeof node.ru === "string") {
+        d[prefix] = node[lang];
+        return;
+      }
+      for (const [k, v] of Object.entries(node)) {
+        walk(prefix ? prefix + "." + k : k, v);
       }
     }
+    walk("", CONTENT);
     CONTENT.stats.forEach((s, i) => {
       d["stat." + (i + 1)] = s.label[lang];
     });
@@ -181,7 +189,6 @@
       d["proj." + (i + 1) + ".title"] = p.title[lang];
       d["proj." + (i + 1) + ".desc"] = p.desc[lang];
     });
-    d["code.available"] = CONTENT.code.available ? "true" : "false";
     return d;
   }
 
@@ -196,6 +203,10 @@
     document.querySelectorAll("[data-i18n]").forEach((el) => {
       const key = el.getAttribute("data-i18n");
       if (dict[key] !== undefined) el.textContent = dict[key];
+    });
+    document.querySelectorAll("[data-i18n-aria]").forEach((el) => {
+      const key = el.getAttribute("data-i18n-aria");
+      if (dict[key] !== undefined) el.setAttribute("aria-label", dict[key]);
     });
     langBtns.forEach((b) => b.classList.toggle("is-active", b.dataset.lang === lang));
     renderProjects();
@@ -319,11 +330,14 @@
     const links = document.getElementById("footerLinks");
     if (!links) return;
     links.innerHTML = "";
+    const SOCIAL_LABELS = {
+      "Email": { en: "Email", ru: "Почта" }
+    };
     CONTENT.footer.socials.forEach((s) => {
       const a = document.createElement("a");
       a.className = "footer-link";
       a.href = s.url;
-      a.textContent = s.label;
+      a.textContent = (SOCIAL_LABELS[s.label] && SOCIAL_LABELS[s.label][currentLang]) || s.label;
       if (s.url && s.url.startsWith("http")) {
         a.target = "_blank";
         a.rel = "noopener";

@@ -22,26 +22,26 @@
 
   <header class="nav" id="nav">
     <div class="container nav-inner">
-      <a href="#hero" class="logo magnetic" aria-label="Danis — home">
+      <a href="#hero" class="logo magnetic" aria-label="Danis — home" data-i18n-aria="nav.home">
         <span class="logo-mark"></span>
         <span class="logo-name">Данис<span class="logo-suffix">.dev</span></span>
       </a>
 
-      <nav class="nav-links" id="navLinks" aria-label="Main navigation">
+      <nav class="nav-links" id="navLinks" aria-label="Main navigation" data-i18n-aria="nav.menu">
         <a href="#about" class="nav-link" data-i18n="nav.about">About</a>
         <a href="#projects" class="nav-link" data-i18n="nav.works">Works</a>
         <a href="#skills" class="nav-link" data-i18n="nav.stack">Stack</a>
         <a href="#contact" class="nav-link" data-i18n="nav.contact">Contact</a>
       </nav>
 
-      <div class="lang-toggle" role="group" aria-label="Language">
+      <div class="lang-toggle" role="group" aria-label="Language" data-i18n-aria="nav.lang">
         <button class="lang-btn is-active" data-lang="en" aria-label="English">EN</button>
         <button class="lang-btn" data-lang="ru" aria-label="Русский">RU</button>
       </div>
 
       <a href="#contact" class="btn btn-accent btn-sm nav-cta magnetic" data-i18n="nav.cta">Contact me</a>
 
-      <button class="burger" id="burger" aria-label="Open menu" aria-expanded="false">
+      <button class="burger" id="burger" aria-label="Open menu" data-i18n-aria="nav.open" aria-expanded="false">
         <span></span><span></span><span></span>
       </button>
     </div>
@@ -77,7 +77,7 @@
           <a href="#contact" class="btn btn-outline magnetic" data-i18n="cta.contact">Contact</a>
         </div>
 
-        <div class="code-window reveal" id="codeWindow" aria-label="developer.js code example">
+        <div class="code-window reveal" id="codeWindow" aria-label="developer.js code example" data-i18n-aria="code.aria">
           <div class="code-header">
             <div class="traffic-lights">
               <span class="light light-red"></span>
@@ -87,7 +87,7 @@
             <span class="code-tab">developer.js</span>
           </div>
           <div class="code-body">
-            <div class="code-line"><span class="t-comment">// portfolio.js — main config</span></div>
+            <div class="code-line"><span class="t-comment" data-i18n="code.comment">// portfolio.js — main config</span></div>
             <div class="code-line"><span class="t-keyword">const</span> <span class="t-ident">developer</span> <span class="t-punc">= {</span></div>
             <div class="code-line code-indent"><span class="t-prop">name:</span> <span class="t-string" data-i18n="code.name">Danis</span><span class="t-punc">,</span></div>
             <div class="code-line code-indent"><span class="t-prop">role:</span> <span class="t-string" data-i18n="code.role">"Frontend Developer"</span><span class="t-punc">,</span></div>
@@ -97,7 +97,7 @@
             <div class="code-line"><span class="t-punc">};</span></div>
             <div class="code-line code-spacer"></div>
             <div class="code-line"><span class="t-ident">developer</span> <span class="t-punc">=</span> <span class="t-string" data-i18n="code.status">"Open to new projects"</span><span class="t-punc">;</span></div>
-            <div class="code-line"><span class="t-ident">console.log</span><span class="t-punc">(</span><span class="t-string">"Let's build something great!"</span><span class="t-punc">);</span></div>
+            <div class="code-line"><span class="t-ident">console.log</span><span class="t-punc">(</span><span class="t-string" data-i18n="code.log">"Let's build something great!"</span><span class="t-punc">);</span></div>
             <span class="code-caret" aria-hidden="true"></span>
           </div>
         </div>
@@ -272,8 +272,8 @@
   </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="js/config.js"></script>
-  <script src="js/content.js"></script>
-  <script src="js/main.js"></script>
+  <script src="js/config.js?v=2"></script>
+  <script src="js/content.js?v=2"></script>
+  <script src="js/main.js?v=2"></script>
 </body>
 </html>
