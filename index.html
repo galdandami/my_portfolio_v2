@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Danis — Web Developer</title>
+  <meta name="description" content="Frontend developer with 4+ years of experience. Building fast, reliable and beautiful websites and web apps — from landing pages to complex web applications.">
+  <meta name="theme-color" content="#0A0A0B">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='6' fill='%23A855F7'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <div class="cursor-glow" aria-hidden="true"></div>
+  <div class="cursor-dot" aria-hidden="true"></div>
+  <div class="cursor-ring" aria-hidden="true"></div>
+
+  <div class="noise" aria-hidden="true"></div>
+
+  <header class="nav" id="nav">
+    <div class="container nav-inner">
+      <a href="#hero" class="logo magnetic" aria-label="Danis — home">
+        <span class="logo-mark"></span>
+        <span class="logo-name">Данис<span class="logo-suffix">.dev</span></span>
+      </a>
+
+      <nav class="nav-links" id="navLinks" aria-label="Main navigation">
+        <a href="#about" class="nav-link" data-i18n="nav.about">About</a>
+        <a href="#projects" class="nav-link" data-i18n="nav.works">Works</a>
+        <a href="#skills" class="nav-link" data-i18n="nav.stack">Stack</a>
+        <a href="#contact" class="nav-link" data-i18n="nav.contact">Contact</a>
+      </nav>
+
+      <div class="lang-toggle" role="group" aria-label="Language">
+        <button class="lang-btn is-active" data-lang="en" aria-label="English">EN</button>
+        <button class="lang-btn" data-lang="ru" aria-label="Русский">RU</button>
+      </div>
+
+      <a href="#contact" class="btn btn-accent btn-sm nav-cta magnetic" data-i18n="nav.cta">Contact me</a>
+
+      <button class="burger" id="burger" aria-label="Open menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <!-- HERO -->
+    <section class="hero" id="hero">
+      <div class="glow glow-center" aria-hidden="true"></div>
+      <div class="glow glow-right" aria-hidden="true"></div>
+      <div class="glow glow-left" aria-hidden="true"></div>
+      <div class="streak streak-1" aria-hidden="true"></div>
+      <div class="streak streak-2" aria-hidden="true"></div>
+
+      <div class="container hero-inner">
+        <div class="badge reveal">
+          <span class="badge-dot"></span>
+          <span class="badge-text" data-i18n="badge">Open to new projects</span>
+        </div>
+
+        <h1 class="hero-title reveal">
+          <span class="hero-line" data-i18n="hero.line1">I build websites and web apps,</span>
+          <span class="hero-line hero-line-accent" data-i18n="hero.line2">that solve business problems</span>
+        </h1>
+
+        <p class="hero-subtitle reveal" data-i18n="hero.sub">
+          Frontend developer with 4+ years of experience. Turning ideas into fast, reliable
+          and beautiful digital products — from landing pages to complex web applications.
+        </p>
+
+        <div class="cta-row reveal">
+          <a href="#projects" class="btn btn-accent magnetic" data-i18n="cta.works">View my work</a>
+          <a href="#contact" class="btn btn-outline magnetic" data-i18n="cta.contact">Contact</a>
+        </div>
+
+        <div class="code-window reveal" id="codeWindow" aria-label="developer.js code example">
+          <div class="code-header">
+            <div class="traffic-lights">
+              <span class="light light-red"></span>
+              <span class="light light-yellow"></span>
+              <span class="light light-green"></span>
+            </div>
+            <span class="code-tab">developer.js</span>
+          </div>
+          <div class="code-body">
+            <div class="code-line"><span class="t-comment">// portfolio.js — main config</span></div>
+            <div class="code-line"><span class="t-keyword">const</span> <span class="t-ident">developer</span> <span class="t-punc">= {</span></div>
+            <div class="code-line code-indent"><span class="t-prop">name:</span> <span class="t-string" data-i18n="code.name">Danis</span><span class="t-punc">,</span></div>
+            <div class="code-line code-indent"><span class="t-prop">role:</span> <span class="t-string" data-i18n="code.role">"Frontend Developer"</span><span class="t-punc">,</span></div>
+            <div class="code-line code-indent"><span class="t-prop">stack:</span> <span class="t-string" data-i18n="code.stack">["React", "TypeScript", "Next.js"]</span><span class="t-punc">,</span></div>
+            <div class="code-line code-indent"><span class="t-prop">experience:</span> <span class="t-string" data-i18n="code.experience">"4+ years"</span><span class="t-punc">,</span></div>
+            <div class="code-line code-indent"><span class="t-prop">available:</span> <span class="t-bool" data-i18n="code.available">true</span><span class="t-punc">,</span></div>
+            <div class="code-line"><span class="t-punc">};</span></div>
+            <div class="code-line code-spacer"></div>
+            <div class="code-line"><span class="t-ident">developer</span> <span class="t-punc">=</span> <span class="t-string" data-i18n="code.status">"Open to new projects"</span><span class="t-punc">;</span></div>
+            <div class="code-line"><span class="t-ident">console.log</span><span class="t-punc">(</span><span class="t-string">"Let's build something great!"</span><span class="t-punc">);</span></div>
+            <span class="code-caret" aria-hidden="true"></span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- STATS -->
+    <section class="stats" id="about">
+      <div class="container">
+        <div class="stats-card reveal" id="statsRow">
+          <div class="stat">
+            <span class="stat-number"><span class="count" data-target="4" data-suffix="+">0</span></span>
+            <span class="stat-label" data-i18n="stat.1">years of experience</span>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat">
+            <span class="stat-number"><span class="count" data-target="38">0</span></span>
+            <span class="stat-label" data-i18n="stat.2">projects in portfolio</span>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat">
+            <span class="stat-number"><span class="count" data-target="22">0</span></span>
+            <span class="stat-label" data-i18n="stat.3">happy clients</span>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat">
+            <span class="stat-number"><span class="count" data-target="100" data-suffix="%">0</span></span>
+            <span class="stat-label" data-i18n="stat.4">projects delivered on time</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROJECTS -->
+    <section class="projects" id="projects">
+      <div class="container">
+        <div class="section-header reveal">
+          <div class="title-column">
+            <span class="kicker" data-i18n="proj.kicker">// Portfolio</span>
+            <h2 class="section-title" data-i18n="proj.title">Featured work</h2>
+            <p class="section-sub" data-i18n="proj.sub">A few projects I'm proud of</p>
+          </div>
+          <a href="#contact" class="all-projects-link magnetic">
+            <span data-i18n="proj.all">All projects</span>
+            <span class="arrow" aria-hidden="true">→</span>
+          </a>
+        </div>
+
+        <div class="cards-row" id="projectsGrid">
+          <article class="project-card tilt reveal">
+            <div class="card-cover">
+              <img src="https://images.unsplash.com/photo-1657812159075-7f0abd98f7b8?q=80&w=1080&auto=format&fit=crop" alt="Nova — e-commerce store" loading="lazy">
+            </div>
+            <div class="card-content">
+              <h3 class="card-title" data-i18n="proj.1.title">Nova — e-commerce store</h3>
+              <p class="card-desc" data-i18n="proj.1.desc">E-commerce built with Next.js: cart, Stripe payments and a personal account. After the redesign, conversion grew by 32%.</p>
+              <div class="tags">
+                <span class="tag">Next.js</span>
+                <span class="tag">Stripe</span>
+                <span class="tag">PostgreSQL</span>
+              </div>
+            </div>
+          </article>
+
+          <article class="project-card tilt reveal">
+            <div class="card-cover">
+              <img src="https://images.unsplash.com/photo-1745270917331-787c80129680?q=80&w=1080&auto=format&fit=crop" alt="Pulse — SaaS analytics" loading="lazy">
+            </div>
+            <div class="card-content">
+              <h3 class="card-title" data-i18n="proj.2.title">Pulse — SaaS analytics</h3>
+              <p class="card-desc" data-i18n="proj.2.desc">A real-time dashboard with reports and charts for 500+ users. Data updates without a page reload.</p>
+              <div class="tags">
+                <span class="tag">React</span>
+                <span class="tag">TypeScript</span>
+                <span class="tag">D3.js</span>
+              </div>
+            </div>
+          </article>
+
+          <article class="project-card tilt reveal">
+            <div class="card-cover">
+              <img src="https://images.unsplash.com/photo-1763568258143-904ea924ac53?q=80&w=1080&auto=format&fit=crop" alt="Stellar — startup landing page" loading="lazy">
+            </div>
+            <div class="card-content">
+              <h3 class="card-title" data-i18n="proj.3.title">Stellar — startup landing page</h3>
+              <p class="card-desc" data-i18n="proj.3.desc">A conversion-focused one-pager with animations and a dark theme. Performance — 98/100 on Lighthouse.</p>
+              <div class="tags">
+                <span class="tag">Next.js</span>
+                <span class="tag">Tailwind</span>
+                <span class="tag">Vercel</span>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- SKILLS -->
+    <section class="skills" id="skills">
+      <div class="container">
+        <div class="skills-header reveal">
+          <span class="kicker" data-i18n="skills.kicker">// Tech stack</span>
+          <h2 class="section-title" data-i18n="skills.title">My stack</h2>
+        </div>
+
+        <div class="columns" id="skillsColumns">
+          <div class="skill-column reveal">
+            <div class="column-header">
+              <span class="column-mark"></span>
+              <span class="column-name" data-i18n="skills.frontend">Frontend</span>
+            </div>
+            <div class="skill-item"><span class="bullet">▹</span><span class="skill-label">React</span></div>
+            <div class="skill-item"><span class="bullet">▹</span><span class="skill-label">Next.js</span></div>
+            <div class="skill-item"><span class="bullet">▹</span><span class="skill-label">TypeScript</span></div>
+            <div class="skill-item"><span class="bullet">▹</span><span class="skill-label">Tailwind CSS</span></div>
+            <div class="skill-item"><span class="bullet">▹</span><span class="skill-label">Redux Toolkit</span></div>
+            <div class="skill-item"><span class="bullet">▹</span><span class="skill-label">Vue.js</span></div>
+          </div>
+
+          <div class="skill-column reveal">
+            <div class="column-header">
+              <span class="column-mark mark-pink"></span>
+              <span class="column-name" data-i18n="skills.backend">Backend</span>
+            </div>
+            <div class="skill-item"><span class="bullet">▹</span><span class="skill-label">Node.js</span></div>
+            <div class="skill-item"><span class="bullet">▹</span><span class="skill-label">Express</span></div>
+            <div class="skill-item"><span class="bullet">▹</span><span class="skill-label">PostgreSQL</span></div>
+            <div class="skill-item"><span class="bullet">▹</span><span class="skill-label">MongoDB</span></div>
+            <div class="skill-item"><span class="bullet">▹</span><span class="skill-label">REST &amp; GraphQL</span></div>
+            <div class="skill-item"><span class="bullet">▹</span><span class="skill-label">WebSockets</span></div>
+          </div>
+
+          <div class="skill-column reveal">
+            <div class="column-header">
+              <span class="column-mark mark-cyan"></span>
+              <span class="column-name" data-i18n="skills.tools">Tools</span>
+            </div>
+            <div class="skill-item"><span class="bullet">▹</span><span class="skill-label">Git &amp; GitHub</span></div>
+            <div class="skill-item"><span class="bullet">▹</span><span class="skill-label">Docker</span></div>
+            <div class="skill-item"><span class="bullet">▹</span><span class="skill-label">CI/CD</span></div>
+            <div class="skill-item"><span class="bullet">▹</span><span class="skill-label">Figma</span></div>
+            <div class="skill-item"><span class="bullet">▹</span><span class="skill-label">Vite</span></div>
+            <div class="skill-item"><span class="bullet">▹</span><span class="skill-label">Jest</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section class="contact" id="contact">
+      <div class="container">
+        <div class="contact-inner reveal">
+          <span class="kicker" data-i18n="contact.kicker">// Contacts</span>
+          <h2 class="contact-title" data-i18n="contact.title">Have a project? Let's talk</h2>
+          <p class="contact-sub" data-i18n="contact.sub">Tell me about your task — I'll reply within a day with a work plan and timeline.</p>
+          <a href="mailto:hello@danis.dev" class="btn btn-accent btn-lg magnetic" id="contactCta" data-i18n="contact.cta">Send a message</a>
+          <a href="mailto:hello@danis.dev" class="contact-email" id="contactEmail">hello@danis.dev</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-inner">
+      <span class="copyright" id="footerCopy" data-i18n="footer.copyright">© 2026 Danis — Web Developer</span>
+      <div class="footer-links" id="footerLinks">
+        <a href="https://github.com" target="_blank" rel="noopener" class="footer-link">GitHub</a>
+        <a href="https://t.me" target="_blank" rel="noopener" class="footer-link">Telegram</a>
+        <a href="mailto:hello@danis.dev" class="footer-link">Email</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/config.js"></script>
+  <script src="js/content.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
