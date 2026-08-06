@@ -108,5 +108,9 @@
     logout: logout
   };
 
-  if (!isAuthed()) showLogin();
+  if (isAuthed()) {
+    hideLogin();
+  } else {
+    showLogin();
+  }
 })();
