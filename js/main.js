@@ -598,6 +598,7 @@
   const contactModal = document.getElementById("contactModal");
   const contactChannels = document.getElementById("contactChannels");
   const contactForm = document.getElementById("contactForm");
+  let copyTimer = null;
 
   function openContactModal() {
     if (!contactModal) return;
@@ -619,21 +620,46 @@
     const icons = {
       GitHub: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>',
       Telegram: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2 11 13"/><path d="M22 2 15 22l-4-9-9-4Z"/></svg>',
-      Email: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>'
+      Email: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="14" height="14" x="8" y="8" rx="2"/><path d="M4 16c-1.1 0-2-.9-2-2V5c0-1.1.9-2 2-2h9c1.1 0 2 .9 2 2"/><path d="m16 3-5 5 5 5"/><path d="m16 3v6.5"/><path d="m12 8h4"/></svg>'
     };
     CONTENT.footer.socials.forEach((s) => {
-      const a = document.createElement("a");
+      const isEmail = s.label === "Email" || s.label.toLowerCase().includes("email") || s.url.startsWith("mailto:");
+      const el = document.createElement(isEmail ? "button" : "a");
+      el.type = isEmail ? "button" : undefined;
       const key = Object.keys(icons).find((k) => s.label === k || s.label.toLowerCase().includes(k.toLowerCase())) || "GitHub";
-      a.className = "contact-channel is-" + key.toLowerCase();
-      a.innerHTML = icons[key] + `<span>${escapeHtml(s.label)}</span>`;
-      if (/^https?:\/\//i.test(s.url)) {
-        a.href = s.url;
-        a.target = "_blank";
-        a.rel = "noopener";
+      el.className = "contact-channel is-" + key.toLowerCase();
+      if (isEmail) {
+        el.dataset.copyEmail = "1";
+      } else {
+        if (/^https?:\/\//i.test(s.url)) {
+          el.href = s.url;
+          el.target = "_blank";
+          el.rel = "noopener";
+        }
       }
-      contactChannels.appendChild(a);
+      el.innerHTML = icons[key] + `<span class="channel-label">${escapeHtml(s.label)}</span>`;
+      contactChannels.appendChild(el);
     });
   }
+
+  if (contactChannels) contactChannels.addEventListener("click", async (e) => {
+    const btn = e.target.closest("[data-copy-email]");
+    if (!btn) return;
+    const email = CONTENT.contact.email;
+    try {
+      await navigator.clipboard.writeText(email);
+      const label = btn.querySelector(".channel-label");
+      if (label) label.textContent = "Copied!";
+      btn.classList.add("is-copied");
+      clearTimeout(copyTimer);
+      copyTimer = setTimeout(() => {
+        if (label) label.textContent = "Email";
+        btn.classList.remove("is-copied");
+      }, 1600);
+    } catch (err) {
+      window.location.href = "mailto:" + email;
+    }
+  });
 
   function escapeHtml(str) {
     const div = document.createElement("div");

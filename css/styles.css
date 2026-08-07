@@ -990,6 +990,13 @@ body.cursor-hidden .cursor-glow { opacity: 0; }
 .contact-channel.is-telegram svg { color: var(--accent-3); }
 .contact-channel.is-github svg { color: var(--text-muted); }
 
+.contact-channel.is-copied {
+  border-color: #22c55e;
+  background: rgba(34, 197, 94, 0.12);
+}
+
+.contact-channel.is-copied svg { color: #22c55e; }
+
 .contact-form { display: flex; flex-direction: column; gap: 16px; margin-top: 28px; }
 
 .contact-form .field { display: flex; flex-direction: column; gap: 6px; }
