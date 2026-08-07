@@ -1,6 +1,9 @@
 -- =====================================================
 --  Pulse CMS — Supabase setup
 --  Run this script in: Supabase Dashboard > SQL Editor
+--
+--  SECURITY: reads are public, writes require a signed-in
+--  Supabase Auth user. See "Create the admin user" below.
 -- =====================================================
 
 create table if not exists public.site_content (
@@ -12,18 +15,33 @@ create table if not exists public.site_content (
 alter table public.site_content enable row level security;
 
 -- Read is public (the portfolio site needs to fetch content).
--- NOTE: write is also open to anon keys for simplicity of a personal site.
--- For production, protect writes: use auth or a service-role endpoint instead.
 drop policy if exists "site_content_read" on public.site_content;
-create policy "site_content_read" on public.site_content for select using (true);
+create policy "site_content_read" on public.site_content
+  for select using (true);
 
+-- Writes are only allowed for authenticated Supabase Auth users.
 drop policy if exists "site_content_insert" on public.site_content;
-create policy "site_content_insert" on public.site_content for insert with check (true);
+create policy "site_content_insert" on public.site_content
+  for insert to authenticated with check (true);
 
 drop policy if exists "site_content_update" on public.site_content;
-create policy "site_content_update" on public.site_content for update using (true) with check (true);
+create policy "site_content_update" on public.site_content
+  for update to authenticated using (true) with check (true);
+
+drop policy if exists "site_content_delete" on public.site_content;
+create policy "site_content_delete" on public.site_content
+  for delete to authenticated using (true);
 
 -- Seed the default content row (content is filled by the admin panel on first save)
 insert into public.site_content (id, content)
 values (1, '{}'::jsonb)
 on conflict (id) do nothing;
+
+-- =====================================================
+--  Create the admin user (DO THIS ONCE IN THE DASHBOARD):
+--  Authentication > Users > Add user
+--    Email:    galdandami@gmail.com
+--    Password: <choose a strong password>
+--  The admin panel signs in with Supabase Auth; the
+--  password is stored by Supabase, not in the code.
+-- =====================================================

@@ -256,7 +256,7 @@
       content.appendChild(desc);
       content.appendChild(tags);
 
-      if (p.url) {
+      if (p.url && /^https?:\/\//i.test(p.url)) {
         card.classList.add("is-linked");
         card.addEventListener("click", () => window.open(p.url, "_blank", "noopener"));
       }
@@ -333,14 +333,17 @@
     const SOCIAL_LABELS = {
       "Email": { en: "Email", ru: "Почта" }
     };
+    const SAFE_SCHEMES = /^(https?:|mailto:|tel:)/i;
     CONTENT.footer.socials.forEach((s) => {
       const a = document.createElement("a");
       a.className = "footer-link";
-      a.href = s.url;
       a.textContent = (SOCIAL_LABELS[s.label] && SOCIAL_LABELS[s.label][currentLang]) || s.label;
-      if (s.url && s.url.startsWith("http")) {
-        a.target = "_blank";
-        a.rel = "noopener";
+      if (SAFE_SCHEMES.test(s.url)) {
+        a.href = s.url;
+        if (!s.url.startsWith("mailto:") && !s.url.startsWith("tel:")) {
+          a.target = "_blank";
+          a.rel = "noopener";
+        }
       }
       links.appendChild(a);
     });
