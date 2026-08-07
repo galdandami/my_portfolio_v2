@@ -4,6 +4,117 @@
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const finePointer = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
 
+  /* ============ Interactive background particles ============ */
+  const bgCanvas = document.getElementById("bgCanvas");
+
+  if (bgCanvas && finePointer && !reduceMotion) {
+    const ctx = bgCanvas.getContext("2d");
+    let w = 0, h = 0;
+    let mouseX = -9999, mouseY = -9999;
+    let rafId = null;
+    const PALETTE = [
+      [168, 85, 247],
+      [236, 72, 153],
+      [34, 211, 238]
+    ];
+    let particles = [];
+
+    function resize() {
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      w = window.innerWidth;
+      h = window.innerHeight;
+      bgCanvas.width = Math.round(w * dpr);
+      bgCanvas.height = Math.round(h * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      const count = Math.min(Math.round((w * h) / 16000), 110);
+      particles = Array.from({ length: count }, () => ({
+        x: Math.random() * w,
+        y: Math.random() * h,
+        vx: (Math.random() - 0.5) * 0.25,
+        vy: (Math.random() - 0.5) * 0.25,
+        r: Math.random() * 1.6 + 0.8,
+        c: PALETTE[Math.floor(Math.random() * PALETTE.length)]
+      }));
+    }
+
+    function step() {
+      ctx.clearRect(0, 0, w, h);
+
+      const LINK = 130;
+      for (let i = 0; i < particles.length; i++) {
+        const p = particles[i];
+
+        p.vx += (Math.random() - 0.5) * 0.03;
+        p.vy += (Math.random() - 0.5) * 0.03;
+
+        const dxm = p.x - mouseX;
+        const dym = p.y - mouseY;
+        const dm = Math.hypot(dxm, dym);
+        if (dm < 150 && dm > 0.001) {
+          const force = (1 - dm / 150) * 1.1;
+          p.vx += (dxm / dm) * force;
+          p.vy += (dym / dm) * force;
+        }
+
+        const speed = Math.hypot(p.vx, p.vy);
+        if (speed > 1.4) {
+          p.vx = (p.vx / speed) * 1.4;
+          p.vy = (p.vy / speed) * 1.4;
+        }
+        p.x += p.vx;
+        p.y += p.vy;
+
+        if (p.x < -20) p.x = w + 20;
+        if (p.x > w + 20) p.x = -20;
+        if (p.y < -20) p.y = h + 20;
+        if (p.y > h + 20) p.y = -20;
+
+        for (let j = i + 1; j < particles.length; j++) {
+          const q = particles[j];
+          const dx = p.x - q.x;
+          const dy = p.y - q.y;
+          const d = Math.hypot(dx, dy);
+          if (d < LINK) {
+            const alpha = (1 - d / LINK) * 0.28;
+            ctx.strokeStyle = `rgba(${p.c[0]}, ${p.c[1]}, ${p.c[2]}, ${alpha})`;
+            ctx.lineWidth = 0.7;
+            ctx.beginPath();
+            ctx.moveTo(p.x, p.y);
+            ctx.lineTo(q.x, q.y);
+            ctx.stroke();
+          }
+        }
+      }
+
+      for (const p of particles) {
+        ctx.fillStyle = `rgba(${p.c[0]}, ${p.c[1]}, ${p.c[2]}, 0.8)`;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      rafId = requestAnimationFrame(step);
+    }
+
+    window.addEventListener("mousemove", (e) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+    });
+    document.addEventListener("mouseleave", () => {
+      mouseX = -9999;
+      mouseY = -9999;
+    });
+    window.addEventListener("resize", resize);
+
+    resize();
+    step();
+    window.addEventListener("beforeunload", () => {
+      if (rafId) cancelAnimationFrame(rafId);
+    });
+  } else if (bgCanvas) {
+    bgCanvas.style.display = "none";
+  }
+
   /* ============ Custom cursor ============ */
   const dot = document.querySelector(".cursor-dot");
   const ring = document.querySelector(".cursor-ring");
