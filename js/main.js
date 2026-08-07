@@ -602,12 +602,14 @@
   function openContactModal() {
     if (!contactModal) return;
     contactModal.classList.add("is-open");
+    contactModal.setAttribute("aria-hidden", "false");
     document.body.classList.add("modal-open");
   }
 
   function closeContactModal() {
     if (!contactModal) return;
     contactModal.classList.remove("is-open");
+    contactModal.setAttribute("aria-hidden", "true");
     document.body.classList.remove("modal-open");
   }
 

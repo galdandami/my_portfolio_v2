@@ -910,10 +910,12 @@ body.cursor-hidden .cursor-glow { opacity: 0; }
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   opacity: 0;
-  transition: opacity 0.3s ease;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
 }
 
-.modal-backdrop.is-open { opacity: 1; }
+.modal-backdrop.is-open { opacity: 1; visibility: visible; pointer-events: auto; }
 
 .contact-modal {
   width: 100%;
