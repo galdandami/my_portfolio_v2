@@ -131,6 +131,20 @@ window.SITE_DEFAULTS = {
     email: "hello@danis.dev"
   },
 
+  modal: {
+    kicker: { en: "// Contacts", ru: "// Контакты" },
+    title: { en: "Send a request", ru: "Отправить заявку" },
+    sub: {
+      en: "Pick a channel or leave a request — I'll reply within a day.",
+      ru: "Выберите канал связи или оставьте заявку — отвечу в течение дня."
+    },
+    close: { en: "Close modal", ru: "Закрыть окно" },
+    name: { en: "Name", ru: "Имя" },
+    reply: { en: "How to reach you", ru: "Как с вами связаться" },
+    msg: { en: "Message", ru: "Сообщение" },
+    send: { en: "Send request", ru: "Отправить заявку" }
+  },
+
   footer: {
     copyright: { en: "© 2026 Danis Galiullin — Web Developer", ru: "© 2026 Данис Галиуллин — Веб-разработчик" },
     socials: [

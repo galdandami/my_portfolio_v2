@@ -325,6 +325,7 @@
     renderStats();
     renderSocials();
     renderContact();
+    renderChannels();
   }
 
   langBtns.forEach((b) => b.addEventListener("click", () => setLang(b.dataset.lang)));
@@ -593,5 +594,83 @@
     setLang(currentLang);
   }
 
+  /* ============ Contact modal ============ */
+  const contactModal = document.getElementById("contactModal");
+  const contactChannels = document.getElementById("contactChannels");
+  const contactForm = document.getElementById("contactForm");
+
+  function openContactModal() {
+    if (!contactModal) return;
+    contactModal.classList.add("is-open");
+    document.body.classList.add("modal-open");
+  }
+
+  function closeContactModal() {
+    if (!contactModal) return;
+    contactModal.classList.remove("is-open");
+    document.body.classList.remove("modal-open");
+  }
+
+  function renderChannels() {
+    if (!contactChannels) return;
+    contactChannels.innerHTML = "";
+    const icons = {
+      GitHub: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>',
+      Telegram: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2 11 13"/><path d="M22 2 15 22l-4-9-9-4Z"/></svg>',
+      Email: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>'
+    };
+    CONTENT.footer.socials.forEach((s) => {
+      const a = document.createElement("a");
+      const key = Object.keys(icons).find((k) => s.label === k || s.label.toLowerCase().includes(k.toLowerCase())) || "GitHub";
+      a.className = "contact-channel is-" + key.toLowerCase();
+      a.innerHTML = icons[key] + `<span>${escapeHtml(s.label)}</span>`;
+      if (/^https?:\/\//i.test(s.url)) {
+        a.href = s.url;
+        a.target = "_blank";
+        a.rel = "noopener";
+      }
+      contactChannels.appendChild(a);
+    });
+  }
+
+  function escapeHtml(str) {
+    const div = document.createElement("div");
+    div.textContent = str;
+    return div.innerHTML;
+  }
+
+  async function handleContactSubmit(e) {
+    e.preventDefault();
+    const name = document.getElementById("contactName");
+    const reply = document.getElementById("contactReply");
+    const msg = document.getElementById("contactMsg");
+    const to = "mailto:" + CONTENT.contact.email;
+    const subject = encodeURIComponent(name.value ? "Request from " + name.value : "Request");
+    const body = encodeURIComponent(
+      (name.value ? "Name: " + name.value + "\n" : "") +
+      (reply.value ? "Contact: " + reply.value + "\n" : "") +
+      "Message:\n" + msg.value
+    );
+    window.location.href = to + "?subject=" + subject + "&body=" + body;
+    closeContactModal();
+  }
+
+  const modalTriggers = document.querySelectorAll(".modal-trigger");
+  modalTriggers.forEach((t) => t.addEventListener("click", (e) => {
+    e.preventDefault();
+    openContactModal();
+  }));
+
+  const contactModalClose = document.getElementById("contactModalClose");
+  if (contactModalClose) contactModalClose.addEventListener("click", closeContactModal);
+  if (contactModal) contactModal.addEventListener("click", (e) => {
+    if (e.target === contactModal) closeContactModal();
+  });
+  if (contactForm) contactForm.addEventListener("submit", handleContactSubmit);
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") closeContactModal();
+  });
+
   init();
+  renderChannels();
 })();
