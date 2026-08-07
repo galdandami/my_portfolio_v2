@@ -96,5 +96,8 @@
   };
 
   document.addEventListener("DOMContentLoaded", applySession);
+  if (client) {
+    client.auth.onAuthStateChange(() => applySession());
+  }
   applySession();
 })();

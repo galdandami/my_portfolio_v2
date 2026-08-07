@@ -19,18 +19,25 @@ drop policy if exists "site_content_read" on public.site_content;
 create policy "site_content_read" on public.site_content
   for select using (true);
 
--- Writes are only allowed for authenticated Supabase Auth users.
+-- Writes are only allowed for the site owner (admin email).
+-- IMPORTANT: keep "Allow new users to sign up" DISABLED in
+-- Authentication > Settings, otherwise anyone can self-register
+-- and become authenticated.
 drop policy if exists "site_content_insert" on public.site_content;
 create policy "site_content_insert" on public.site_content
-  for insert to authenticated with check (true);
+  for insert to authenticated
+  with check (auth.jwt() ->> 'email' = 'galdandami@gmail.com');
 
 drop policy if exists "site_content_update" on public.site_content;
 create policy "site_content_update" on public.site_content
-  for update to authenticated using (true) with check (true);
+  for update to authenticated
+  using (auth.jwt() ->> 'email' = 'galdandami@gmail.com')
+  with check (auth.jwt() ->> 'email' = 'galdandami@gmail.com');
 
 drop policy if exists "site_content_delete" on public.site_content;
 create policy "site_content_delete" on public.site_content
-  for delete to authenticated using (true);
+  for delete to authenticated
+  using (auth.jwt() ->> 'email' = 'galdandami@gmail.com');
 
 -- Seed the default content row (content is filled by the admin panel on first save)
 insert into public.site_content (id, content)
