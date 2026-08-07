@@ -2,7 +2,7 @@
 
 window.SITE_DEFAULTS = {
   meta: {
-    title: { en: "Damis Galiullin — Web Developer", ru: "Дамис Галиуллин — Веб-разработчик" },
+    title: { en: "Danis Galiullin — Web Developer", ru: "Данис Галиуллин — Веб-разработчик" },
     desc: {
       en: "Frontend developer with 4+ years of experience. Building fast, reliable and beautiful websites and web apps — from landing pages to complex web applications.",
       ru: "Фронтенд-разработчик с 4+ годами опыта. Создаю сайты и веб-приложения, которые решают задачи бизнеса."
@@ -31,7 +31,7 @@ window.SITE_DEFAULTS = {
   "cta.contact": { en: "Contact", ru: "Связаться" },
 
   code: {
-    name: { en: "Damis Galiullin", ru: "Дамис Галиуллин" },
+    name: { en: "Danis Galiullin", ru: "Данис Галиуллин" },
     role: { en: '"Frontend Developer"', ru: '"Фронтенд-разработчик"' },
     stack: '["React", "TypeScript", "Next.js"]',
     experience: { en: '"4+ years"', ru: '"4+ года"' },
@@ -48,7 +48,7 @@ window.SITE_DEFAULTS = {
     stack: { en: "Stack", ru: "Стек" },
     contact: { en: "Contact", ru: "Контакты" },
     cta: { en: "Contact me", ru: "Связаться" },
-    home: { en: "Damis Galiullin — home", ru: "Дамис Галиуллин — главная" },
+    home: { en: "Danis Galiullin — home", ru: "Данис Галиуллин — главная" },
     menu: { en: "Main navigation", ru: "Основная навигация" },
     open: { en: "Open menu", ru: "Открыть меню" },
     lang: { en: "Language", ru: "Язык" }
@@ -132,7 +132,7 @@ window.SITE_DEFAULTS = {
   },
 
   footer: {
-    copyright: { en: "© 2026 Damis Galiullin — Web Developer", ru: "© 2026 Дамис Галиуллин — Веб-разработчик" },
+    copyright: { en: "© 2026 Danis Galiullin — Web Developer", ru: "© 2026 Данис Галиуллин — Веб-разработчик" },
     socials: [
       { label: "GitHub", url: "https://github.com" },
       { label: "Telegram", url: "https://t.me" },
