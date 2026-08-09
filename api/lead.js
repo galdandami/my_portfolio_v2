@@ -13,11 +13,24 @@ export default async function handler(req, res) {
       .json({ ok: false, error: "Server is not configured (missing env)" });
   }
 
+  let body = {};
+  try {
+    const raw = await new Promise((resolve, reject) => {
+      let data = "";
+      req.on("data", (chunk) => (data += chunk));
+      req.on("end", () => resolve(data));
+      req.on("error", reject);
+    });
+    body = raw ? JSON.parse(raw) : {};
+  } catch {
+    return res.status(400).json({ ok: false, error: "Invalid request body" });
+  }
+
   try {
     const upstream = await fetch(target, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ ...req.body, secret }),
+      body: JSON.stringify({ ...body, secret }),
     });
 
     const text = await upstream.text();
@@ -30,6 +43,6 @@ export default async function handler(req, res) {
 
     res.status(upstream.status).json(data);
   } catch (err) {
-    res.status(502).json({ ok: false, error: "Backend unreachable", detail: String(err && err.message || err) });
+    res.status(502).json({ ok: false, error: "Backend unreachable" });
   }
 }
