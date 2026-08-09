@@ -861,22 +861,28 @@ body.cursor-hidden .cursor-glow { opacity: 0; }
   .contact-title { font-size: 34px; }
 
   .nav-links {
-    flex-direction: row;
-    align-items: center;
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: min(320px, 80vw);
+    background: rgba(19, 19, 24, 0.97);
+    backdrop-filter: blur(20px);
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
     gap: 12px;
-    padding: 0;
-    position: static;
-    background: none;
-    border-left: none;
-    backdrop-filter: none;
-    transform: none;
+    padding: 40px 36px;
+    transform: translateX(100%);
+    transition: transform 0.45s var(--ease-out);
+    border-left: 1px solid var(--border-subtle);
   }
 
-  .nav-links.is-open { transform: none; }
+  .nav-links.is-open { transform: translateX(0); }
 
-  .nav-link { font-size: 13px; }
+  .nav-link { font-size: 20px; color: var(--text-primary); font-family: var(--font-heading); }
 
-  .burger { display: none; }
+  .burger { display: flex; }
   .nav-cta { display: none; }
 }
 
@@ -898,11 +904,6 @@ body.cursor-hidden .cursor-glow { opacity: 0; }
   .code-indent { padding-left: 14px; }
   .code-spacer { height: 10px; }
   .code-caret { display: none; }
-  .nav-inner { gap: 12px; }
-  .nav-links { gap: 10px; }
-  .nav-link { font-size: 12.5px; }
-  .logo-name { font-size: 16px; }
-  .lang-btn { padding: 4px 8px; font-size: 12px; }
 }
 
 /* ============ Contact modal ============ */
