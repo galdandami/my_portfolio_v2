@@ -898,8 +898,12 @@ body.cursor-hidden .cursor-glow { opacity: 0; }
   .section-header { flex-direction: column; align-items: flex-start; gap: 20px; }
   .footer-inner { flex-direction: column; align-items: center; text-align: center; }
   .card-desc { min-height: 0; }
-  .code-body { font-size: 12.5px; padding: 18px 18px 22px; }
-  .code-indent { padding-left: 18px; }
+  .code-window { margin-top: 40px; }
+  .code-body { font-size: 11.5px; line-height: 1.75; padding: 16px 14px 20px; overflow-x: auto; }
+  .code-line { white-space: pre-wrap; word-break: break-word; }
+  .code-indent { padding-left: 14px; }
+  .code-spacer { height: 10px; }
+  .code-caret { display: none; }
 }
 
 /* ============ Contact modal ============ */
@@ -1041,7 +1045,9 @@ body.cursor-hidden .cursor-glow { opacity: 0; }
 body.modal-open { overflow: hidden; }
 
 @media (max-width: 640px) {
-  .contact-channels { grid-template-columns: 1fr; }
+  .contact-channels { grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  .contact-channel { padding: 12px 6px; gap: 5px; font-size: 12px; }
+  .contact-channel svg { width: 18px; height: 18px; }
   .contact-form .field-row { grid-template-columns: 1fr; }
   .contact-modal { padding: 26px 20px; }
 }
