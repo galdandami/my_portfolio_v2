@@ -447,17 +447,30 @@
     };
     const SAFE_SCHEMES = /^(https?:|mailto:|tel:)/i;
     CONTENT.footer.socials.forEach((s) => {
-      const a = document.createElement("a");
-      a.className = "footer-link";
-      a.textContent = (SOCIAL_LABELS[s.label] && SOCIAL_LABELS[s.label][currentLang]) || s.label;
-      if (SAFE_SCHEMES.test(s.url)) {
-        a.href = s.url;
+      const isEmail = s.label === "Email" || s.label.toLowerCase().includes("email") || s.url.startsWith("mailto:");
+      const el = document.createElement(isEmail ? "button" : "a");
+      el.type = isEmail ? "button" : undefined;
+      el.className = "footer-link";
+      el.textContent = (SOCIAL_LABELS[s.label] && SOCIAL_LABELS[s.label][currentLang]) || s.label;
+      if (isEmail) {
+        el.addEventListener("click", async () => {
+          const label = el.textContent;
+          try {
+            await navigator.clipboard.writeText(CONTENT.contact.email);
+            el.textContent = "Copied!";
+            setTimeout(() => { el.textContent = label; }, 1600);
+          } catch (err) {
+            window.location.href = "mailto:" + CONTENT.contact.email;
+          }
+        });
+      } else if (SAFE_SCHEMES.test(s.url)) {
+        el.href = s.url;
         if (!s.url.startsWith("mailto:") && !s.url.startsWith("tel:")) {
-          a.target = "_blank";
-          a.rel = "noopener";
+          el.target = "_blank";
+          el.rel = "noopener";
         }
       }
-      links.appendChild(a);
+      links.appendChild(el);
     });
   }
 
@@ -598,7 +611,6 @@
   const contactModal = document.getElementById("contactModal");
   const contactChannels = document.getElementById("contactChannels");
   const contactForm = document.getElementById("contactForm");
-  let copyTimer = null;
 
   function openContactModal() {
     if (!contactModal) return;
@@ -618,7 +630,7 @@
     if (!contactChannels) return;
     contactChannels.innerHTML = "";
     const icons = {
-      GitHub: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>',
+      Max: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3.2"/><path d="M12 2.5v3.3M12 18.2v3.3M2.5 12h3.3M18.2 12h3.3M5.3 5.3l2.4 2.4M16.3 16.3l2.4 2.4M18.7 5.3l-2.4 2.4M7.7 16.3l-2.4 2.4"/></svg>',
       Telegram: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2 11 13"/><path d="M22 2 15 22l-4-9-9-4Z"/></svg>',
       Email: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="14" height="14" x="8" y="8" rx="2"/><path d="M4 16c-1.1 0-2-.9-2-2V5c0-1.1.9-2 2-2h9c1.1 0 2 .9 2 2"/><path d="m16 3-5 5 5 5"/><path d="m16 3v6.5"/><path d="m12 8h4"/></svg>'
     };
@@ -626,7 +638,7 @@
       const isEmail = s.label === "Email" || s.label.toLowerCase().includes("email") || s.url.startsWith("mailto:");
       const el = document.createElement(isEmail ? "button" : "a");
       el.type = isEmail ? "button" : undefined;
-      const key = Object.keys(icons).find((k) => s.label === k || s.label.toLowerCase().includes(k.toLowerCase())) || "GitHub";
+      const key = Object.keys(icons).find((k) => s.label === k || s.label.toLowerCase().includes(k.toLowerCase())) || "Max";
       el.className = "contact-channel is-" + key.toLowerCase();
       if (isEmail) {
         el.dataset.copyEmail = "1";
@@ -651,8 +663,7 @@
       const label = btn.querySelector(".channel-label");
       if (label) label.textContent = "Copied!";
       btn.classList.add("is-copied");
-      clearTimeout(copyTimer);
-      copyTimer = setTimeout(() => {
+      setTimeout(() => {
         if (label) label.textContent = "Email";
         btn.classList.remove("is-copied");
       }, 1600);
@@ -667,21 +678,91 @@
     return div.innerHTML;
   }
 
+  function markInvalid(input) {
+    if (!input) return;
+    input.classList.add("is-invalid");
+  }
+
+  function clearInvalid(input) {
+    if (!input) return;
+    input.classList.remove("is-invalid");
+  }
+
   async function handleContactSubmit(e) {
     e.preventDefault();
     const name = document.getElementById("contactName");
     const reply = document.getElementById("contactReply");
+    const title = document.getElementById("contactTitle");
     const msg = document.getElementById("contactMsg");
-    const to = "mailto:" + CONTENT.contact.email;
-    const subject = encodeURIComponent(name.value ? "Request from " + name.value : "Request");
-    const body = encodeURIComponent(
-      (name.value ? "Name: " + name.value + "\n" : "") +
-      (reply.value ? "Contact: " + reply.value + "\n" : "") +
-      "Message:\n" + msg.value
-    );
-    window.location.href = to + "?subject=" + subject + "&body=" + body;
-    closeContactModal();
+    const submitBtn = contactForm.querySelector(".contact-form-btn");
+    if (!submitBtn) return;
+    const originalLabel = submitBtn.textContent;
+
+    const nameVal = (name && name.value || "").trim();
+    const replyVal = (reply && reply.value || "").trim();
+    if (!nameVal) {
+      markInvalid(name);
+      name && name.focus();
+      return;
+    }
+    if (!replyVal) {
+      markInvalid(reply);
+      reply && reply.focus();
+      return;
+    }
+    clearInvalid(name);
+    clearInvalid(reply);
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = "…";
+    const payload = {
+      secret: window.SB_CONFIG.leadSecret,
+      name: nameVal,
+      contact: replyVal,
+      title: (title && title.value || "").trim(),
+      message: (msg && msg.value || "").trim()
+    };
+    const sendViaBot = async () => {
+      const res = await fetch(window.SB_CONFIG.leadUrl, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      });
+      if (!res.ok) throw new Error("bot failed");
+      return res.json();
+    };
+    const sendToSupabase = async () => {
+      const res = await fetch(window.SB_CONFIG.url + "/rest/v1/leads", {
+        method: "POST",
+        headers: {
+          "apikey": window.SB_CONFIG.anonKey,
+          "Authorization": "Bearer " + window.SB_CONFIG.anonKey,
+          "Content-Type": "application/json",
+          "Prefer": "return=minimal"
+        },
+        body: JSON.stringify({
+          name: payload.name,
+          contact: payload.contact,
+          title: payload.title,
+          message: payload.message
+        })
+      });
+      if (!res.ok) throw new Error("supabase failed");
+    };
+    try {
+      await Promise.allSettled([sendViaBot(), sendToSupabase()]);
+      submitBtn.textContent = "✓";
+      setTimeout(closeContactModal, 900);
+    } catch (err) {
+      submitBtn.disabled = false;
+      submitBtn.textContent = originalLabel;
+    }
   }
+
+  ["contactName", "contactReply"].forEach((id) => {
+    const el = document.getElementById(id);
+    if (el) el.addEventListener("input", () => clearInvalid(el));
+  });
 
   const modalTriggers = document.querySelectorAll(".modal-trigger");
   modalTriggers.forEach((t) => t.addEventListener("click", (e) => {

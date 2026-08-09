@@ -2,7 +2,9 @@
 
 window.SB_CONFIG = {
   url: "https://udozteluyreuhfdgjiqq.supabase.co",
-  anonKey: "sb_publishable_594WMbRbwJNRKmURHKPK-A_ZjvklqWO"
+  anonKey: "sb_publishable_594WMbRbwJNRKmURHKPK-A_ZjvklqWO",
+  leadUrl: "https://daga76.pythonanywhere.com/api/lead",
+  leadSecret: "LEAD_SECRET_ENV"
 };
 
 (function () {

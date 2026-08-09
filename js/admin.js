@@ -633,9 +633,9 @@
       "cta.contact": pairVal("f-hero-cta-contact"),
       code: {
         name: pairVal("f-code-name"),
-        role: val($("f-code-role")),
+        role: { en: val($("f-code-role-en")), ru: val($("f-code-role-ru")) },
         stack: val($("f-code-stack")),
-        experience: val($("f-code-exp")),
+        experience: { en: val($("f-code-exp-en")), ru: val($("f-code-exp-ru")) },
         available: $("f-code-avail").checked,
         status: pairVal("f-code-status")
       },

@@ -274,19 +274,23 @@
 
       <div class="contact-channels" id="contactChannels"></div>
 
-      <form class="contact-form" id="contactForm">
+      <form class="contact-form" id="contactForm" novalidate>
         <div class="field-row">
           <div class="field">
             <span class="field-label" data-i18n="modal.name">Name</span>
-            <input type="text" id="contactName" autocomplete="name">
+            <input type="text" id="contactName" autocomplete="name" required>
           </div>
           <div class="field">
             <span class="field-label" data-i18n="modal.reply">How to reach you</span>
-            <input type="text" id="contactReply" autocomplete="off" placeholder="telegram / email">
+            <input type="text" id="contactReply" autocomplete="off" placeholder="max / telegram / email / phone number" required>
           </div>
         </div>
         <div class="field">
-          <span class="field-label" data-i18n="modal.msg">Message</span>
+          <span class="field-label" data-i18n="modal.title">Project title</span>
+          <input type="text" id="contactTitle" autocomplete="off" placeholder="Nova e-commerce store, etc.">
+        </div>
+        <div class="field">
+          <span class="field-label" data-i18n="modal.msg">Description</span>
           <textarea id="contactMsg" rows="4"></textarea>
         </div>
         <button type="submit" class="btn btn-accent btn-lg contact-form-btn" data-i18n="modal.send">Send request</button>
@@ -306,8 +310,8 @@
   </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="js/config.js?v=6"></script>
-  <script src="js/content.js?v=6"></script>
-  <script src="js/main.js?v=6"></script>
+  <script src="js/config.js?v=13"></script>
+  <script src="js/content.js?v=13"></script>
+  <script src="js/main.js?v=13"></script>
 </body>
 </html>

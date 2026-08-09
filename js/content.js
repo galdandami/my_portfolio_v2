@@ -139,16 +139,17 @@ window.SITE_DEFAULTS = {
       ru: "Выберите канал связи или оставьте заявку — отвечу в течение дня."
     },
     close: { en: "Close modal", ru: "Закрыть окно" },
-    name: { en: "Name", ru: "Имя" },
-    reply: { en: "How to reach you", ru: "Как с вами связаться" },
-    msg: { en: "Message", ru: "Сообщение" },
+    name: { en: "Name *", ru: "Имя *" },
+    reply: { en: "How to reach you *", ru: "Как с вами связаться *" },
+    title: { en: "Project title", ru: "Название проекта" },
+    msg: { en: "Description", ru: "Описание" },
     send: { en: "Send request", ru: "Отправить заявку" }
   },
 
   footer: {
     copyright: { en: "© 2026 Danis Galiullin — Web Developer", ru: "© 2026 Данис Галиуллин — Веб-разработчик" },
     socials: [
-      { label: "GitHub", url: "https://github.com" },
+      { label: "Max", url: "https://max.ru/89539997270" },
       { label: "Telegram", url: "https://t.me" },
       { label: "Email", url: "mailto:hello@danis.dev" }
     ]
