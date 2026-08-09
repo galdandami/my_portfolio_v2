@@ -30,6 +30,6 @@ export default async function handler(req, res) {
 
     res.status(upstream.status).json(data);
   } catch (err) {
-    res.status(502).json({ ok: false, error: "Backend unreachable" });
+    res.status(502).json({ ok: false, error: "Backend unreachable", detail: String(err && err.message || err) });
   }
 }
