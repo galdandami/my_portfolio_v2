@@ -238,6 +238,12 @@ body.cursor-hidden .cursor-glow { opacity: 0; }
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
 .lang-toggle:hover {
   border-color: rgba(168, 85, 247, 0.5);
   box-shadow: 0 0 16px rgba(168, 85, 247, 0.12);
