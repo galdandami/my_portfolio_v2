@@ -694,6 +694,7 @@
     const reply = document.getElementById("contactReply");
     const title = document.getElementById("contactTitle");
     const msg = document.getElementById("contactMsg");
+    const note = document.getElementById("contactNote");
     const submitBtn = contactForm.querySelector(".contact-form-btn");
     if (!submitBtn) return;
     const originalLabel = submitBtn.textContent;
@@ -720,7 +721,8 @@
       name: nameVal,
       contact: replyVal,
       title: (title && title.value || "").trim(),
-      message: (msg && msg.value || "").trim()
+      message: (msg && msg.value || "").trim(),
+      note: (note && note.value || "").trim()
     };
     const sendViaBot = async () => {
       const res = await fetch(window.SB_CONFIG.leadUrl, {
@@ -744,7 +746,8 @@
           name: payload.name,
           contact: payload.contact,
           title: payload.title,
-          message: payload.message
+          message: payload.message,
+          note: payload.note
         })
       });
       if (!res.ok) throw new Error("supabase failed");

@@ -142,7 +142,8 @@ window.SITE_DEFAULTS = {
     name: { en: "Name *", ru: "Имя *" },
     reply: { en: "How to reach you *", ru: "Как с вами связаться *" },
     title: { en: "Project title", ru: "Название проекта" },
-    msg: { en: "Description", ru: "Описание" },
+    msg: { en: "Project description", ru: "Описание проекта" },
+    note: { en: "Message for us", ru: "Сообщение для нас" },
     send: { en: "Send request", ru: "Отправить заявку" }
   },
 

@@ -47,6 +47,10 @@
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
           <span data-i18n="label.contact">Contact</span>
         </button>
+        <button class="side-item" data-nav="leads">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          <span data-i18n="label.leads">Leads</span>
+        </button>
       </nav>
 
       <div class="side-spacer"></div>
@@ -506,6 +510,19 @@
                 <span class="field-label" data-i18n="lbl.email">Email</span>
                 <input type="text" id="f-contact-email" autocomplete="off">
               </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============ LEADS ============ -->
+        <section class="editor-section" data-section="leads" hidden>
+          <div class="card edit-card">
+            <div class="card-header">
+              <span class="card-title" data-i18n="grp.leads">Submitted requests</span>
+              <button class="btn btn-outline" id="leadsRefreshBtn" data-i18n="btn.refresh">Refresh</button>
+            </div>
+            <div class="leads-list" id="leadsList">
+              <span class="leads-empty" id="leadsEmpty" data-i18n="leads.empty">No leads yet</span>
             </div>
           </div>
         </section>

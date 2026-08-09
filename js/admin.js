@@ -14,18 +14,21 @@
       "label.projects": "Projects",
       "label.skills": "Skills",
       "label.contact": "Contact",
+      "label.leads": "Leads",
       "page.general.kicker": "// General",
       "page.hero.kicker": "// Hero",
       "page.stats.kicker": "// Stats",
       "page.projects.kicker": "// Projects",
       "page.skills.kicker": "// Skills",
       "page.contact.kicker": "// Contact",
+      "page.leads.kicker": "// Leads",
       "page.general.title": "General",
       "page.hero.title": "Hero",
       "page.stats.title": "Stats",
       "page.projects.title": "Projects",
       "page.skills.title": "Skills",
       "page.contact.title": "Contact",
+      "page.leads.title": "Leads",
       "user.role": "Administrator",
       "site.link": "open site →",
       "login.title": "Sign in",
@@ -59,6 +62,19 @@
       "grp.skills": "Skill groups",
       "grp.contactHeader": "Section header",
       "grp.contactInfo": "Contact details",
+      "grp.leads": "Submitted requests",
+      "btn.refresh": "Refresh",
+      "leads.empty": "No leads yet",
+      "leads.loading": "Loading...",
+      "leads.error": "Could not load leads: {{msg}}",
+      "leads.count": "{{n}} request(s)",
+      "leads.col.date": "Date",
+      "leads.col.name": "Name",
+      "leads.col.contact": "Contact",
+      "leads.col.title": "Project title",
+      "leads.col.message": "Description",
+      "leads.col.note": "Message for us",
+      "leads.col.source": "Source",
       "lbl.title": "Title",
       "lbl.desc": "Description",
       "lbl.badge": "Badge text",
@@ -119,12 +135,14 @@
       "label.projects": "Проекты",
       "label.skills": "Навыки",
       "label.contact": "Контакты",
+      "label.leads": "Заявки",
       "page.general.kicker": "// Общее",
       "page.hero.kicker": "// Главный экран",
       "page.stats.kicker": "// Статистика",
       "page.projects.kicker": "// Проекты",
       "page.skills.kicker": "// Навыки",
       "page.contact.kicker": "// Контакты",
+      "page.leads.kicker": "// Заявки",
       "page.general.title": "Общее",
       "page.hero.title": "Главный экран",
       "page.stats.title": "Статистика",
@@ -164,6 +182,19 @@
       "grp.skills": "Группы навыков",
       "grp.contactHeader": "Заголовок секции",
       "grp.contactInfo": "Контактные данные",
+      "grp.leads": "Отправленные заявки",
+      "btn.refresh": "Обновить",
+      "leads.empty": "Заявок пока нет",
+      "leads.loading": "Загрузка...",
+      "leads.error": "Не удалось загрузить заявки: {{msg}}",
+      "leads.count": "{{n}} заявок(и)",
+      "leads.col.date": "Дата",
+      "leads.col.name": "Имя",
+      "leads.col.contact": "Контакт",
+      "leads.col.title": "Название проекта",
+      "leads.col.message": "Описание",
+      "leads.col.note": "Сообщение для нас",
+      "leads.col.source": "Источник",
       "lbl.title": "Заголовок",
       "lbl.desc": "Описание",
       "lbl.badge": "Текст бейджа",
@@ -711,6 +742,97 @@
     renderSkills();
     renderSocials();
   }
+
+  /* ============ Leads ============ */
+  const leadsList = $("leadsList");
+  const leadsEmpty = $("leadsEmpty");
+
+  function renderLeads(rows) {
+    leadsEmpty.hidden = rows.length > 0;
+    if (rows.length === 0) return;
+    const count = document.createElement("div");
+    count.className = "leads-count";
+    count.textContent = t("leads.count", { n: rows.length });
+    leadsList.appendChild(count);
+    rows.forEach((lead) => {
+      const card = document.createElement("div");
+      card.className = "item-card lead-card";
+      const head = document.createElement("div");
+      head.className = "item-head";
+      const title = document.createElement("span");
+      title.className = "item-title";
+      title.textContent = lead.name || (lead.contact || "—");
+      head.appendChild(title);
+      const meta = document.createElement("div");
+      meta.className = "leads-meta";
+      const when = document.createElement("span");
+      when.textContent = fmtTime(lead.created_at);
+      const src = document.createElement("span");
+      src.className = "leads-src";
+      src.textContent = lead.source || "site";
+      meta.appendChild(when);
+      meta.appendChild(src);
+      head.appendChild(meta);
+      card.appendChild(head);
+      const info = [
+        t("leads.col.contact"), lead.contact,
+        t("leads.col.title"), lead.title,
+        t("leads.col.message"), lead.message,
+        t("leads.col.note"), lead.note
+      ];
+      for (let i = 0; i < info.length; i += 2) {
+        const key = info[i];
+        const value = info[i + 1];
+        if (!value) continue;
+        const row = document.createElement("div");
+        row.className = "leads-row";
+        const k = document.createElement("span");
+        k.className = "leads-key";
+        k.textContent = key + ": ";
+        const v = document.createElement("span");
+        v.className = "leads-val";
+        v.textContent = value;
+        row.appendChild(k);
+        row.appendChild(v);
+        card.appendChild(row);
+      }
+      leadsList.appendChild(card);
+    });
+  }
+
+  async function loadLeads() {
+    if (!window.supabaseClient) {
+      leadsList.innerHTML = "";
+      leadsEmpty.hidden = false;
+      return;
+    }
+    leadsList.innerHTML = "";
+    leadsEmpty.textContent = t("leads.loading");
+    leadsEmpty.hidden = false;
+    try {
+      const { data, error } = await window.supabaseClient
+        .from("leads")
+        .select("*")
+        .order("created_at", { ascending: false })
+        .limit(50);
+      if (error) throw error;
+      leadsList.innerHTML = "";
+      renderLeads(data || []);
+    } catch (err) {
+      leadsList.innerHTML = "";
+      leadsEmpty.textContent = t("leads.error", { msg: err.message || String(err) });
+      leadsEmpty.hidden = false;
+    }
+  }
+
+  const leadsRefreshBtn = $("leadsRefreshBtn");
+  if (leadsRefreshBtn) leadsRefreshBtn.addEventListener("click", loadLeads);
+
+  document.querySelectorAll(".side-item").forEach((item) => {
+    item.addEventListener("click", () => {
+      if (item.dataset.nav === "leads") loadLeads();
+    });
+  });
 
   /* ============ Delegate events on repeaters ============ */
   function moveItem(list, index, delta) {

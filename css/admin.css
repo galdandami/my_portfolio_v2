@@ -503,6 +503,33 @@ svg { display: block; }
 
 .item-title { font-family: var(--font-heading); font-size: 13px; font-weight: 600; }
 
+/* ============ Leads ============ */
+.leads-list { display: flex; flex-direction: column; gap: 12px; }
+
+.leads-empty { color: var(--text-muted); font-size: 13px; }
+
+.leads-count { font-size: 12px; color: var(--text-muted); font-family: var(--font-mono); }
+
+.lead-card { gap: 8px; }
+
+.leads-meta { display: flex; align-items: center; gap: 10px; font-family: var(--font-mono); font-size: 11px; color: var(--text-muted); }
+
+.leads-src {
+  padding: 2px 8px;
+  border-radius: 999px;
+  border: 1px solid var(--border-subtle);
+  background: rgba(168, 85, 247, 0.1);
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.leads-row { font-size: 13px; line-height: 1.55; }
+
+.leads-key { color: var(--text-muted); }
+
+.leads-val { color: var(--text-primary); white-space: pre-wrap; overflow-wrap: anywhere; }
+
 .item-actions { display: flex; gap: 4px; }
 
 .mini-btn {
