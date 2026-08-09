@@ -717,7 +717,6 @@
     submitBtn.disabled = true;
     submitBtn.textContent = "…";
     const payload = {
-      secret: window.SB_CONFIG.leadSecret,
       name: nameVal,
       contact: replyVal,
       title: (title && title.value || "").trim(),
