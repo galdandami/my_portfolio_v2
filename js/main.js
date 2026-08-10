@@ -10,6 +10,7 @@
   if (bgCanvas && finePointer && !reduceMotion) {
     const ctx = bgCanvas.getContext("2d");
     let w = 0, h = 0;
+    let targetX = -9999, targetY = -9999;
     let mouseX = -9999, mouseY = -9999;
     let rafId = null;
     const PALETTE = [
@@ -41,6 +42,10 @@
       ctx.clearRect(0, 0, w, h);
 
       const LINK = 130;
+      const MOUSE_RADIUS = 240;
+      mouseX += (targetX - mouseX) * 0.3;
+      mouseY += (targetY - mouseY) * 0.3;
+
       for (let i = 0; i < particles.length; i++) {
         const p = particles[i];
 
@@ -50,16 +55,16 @@
         const dxm = p.x - mouseX;
         const dym = p.y - mouseY;
         const dm = Math.hypot(dxm, dym);
-        if (dm < 150 && dm > 0.001) {
-          const force = (1 - dm / 150) * 1.1;
+        if (dm < MOUSE_RADIUS && dm > 0.001) {
+          const force = (1 - dm / MOUSE_RADIUS) * 2.2;
           p.vx += (dxm / dm) * force;
           p.vy += (dym / dm) * force;
         }
 
         const speed = Math.hypot(p.vx, p.vy);
-        if (speed > 1.4) {
-          p.vx = (p.vx / speed) * 1.4;
-          p.vy = (p.vy / speed) * 1.4;
+        if (speed > 2.4) {
+          p.vx = (p.vx / speed) * 2.4;
+          p.vy = (p.vy / speed) * 2.4;
         }
         p.x += p.vx;
         p.y += p.vy;
@@ -96,13 +101,15 @@
       rafId = requestAnimationFrame(step);
     }
 
-    window.addEventListener("mousemove", (e) => {
-      mouseX = e.clientX;
-      mouseY = e.clientY;
-    });
+    const setMouse = (x, y) => {
+      targetX = x;
+      targetY = y;
+    };
+
+    window.addEventListener("pointermove", (e) => setMouse(e.clientX, e.clientY), { passive: true });
     document.addEventListener("mouseleave", () => {
-      mouseX = -9999;
-      mouseY = -9999;
+      targetX = -9999;
+      targetY = -9999;
     });
     window.addEventListener("resize", resize);
 
