@@ -116,10 +116,6 @@ button { font: inherit; background: none; border: none; cursor: pointer; }
   a, button, .tilt, .stat, .project-card { cursor: none; }
 }
 
-body.cursor-hidden .cursor-dot,
-body.cursor-hidden .cursor-ring,
-body.cursor-hidden .cursor-glow { opacity: 0; }
-
 /* ============ Noise overlay ============ */
 .bg-canvas {
   position: fixed;

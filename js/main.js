@@ -186,7 +186,7 @@
 
     document.addEventListener("mouseleave", hide);
 
-    const interactive = "a, button, .tilt, input, textarea, [data-cursor]";
+    const interactive = "a, button, .tilt, input, textarea";
     document.addEventListener("mouseover", (e) => {
       if (e.target.closest(interactive)) {
         ring.classList.add("is-hover");
@@ -352,16 +352,25 @@
     renderStats();
     renderSocials();
     renderContact();
-    renderChannels();
   }
 
   langBtns.forEach((b) => b.addEventListener("click", () => setLang(b.dataset.lang)));
 
-  /* ============ Dynamic renders ============ */
+  /* ============ Dynamic renders (build once, update texts on lang change) ============ */
   function renderProjects() {
     const grid = document.getElementById("projectsGrid");
     if (!grid) return;
-    grid.innerHTML = "";
+    if (grid.children.length) {
+      CONTENT.projects.forEach((p, i) => {
+        const card = grid.children[i];
+        if (!card) return;
+        const titleEl = card.querySelector(".card-title");
+        const descEl = card.querySelector(".card-desc");
+        if (titleEl) titleEl.textContent = p.title[currentLang];
+        if (descEl) descEl.textContent = p.desc[currentLang];
+      });
+      return;
+    }
     CONTENT.projects.forEach((p, i) => {
       const card = document.createElement("article");
       card.className = "project-card tilt reveal";
@@ -396,7 +405,6 @@
       content.appendChild(tags);
 
       if (p.url && /^https?:\/\//i.test(p.url)) {
-        card.classList.add("is-linked");
         card.addEventListener("click", () => window.open(p.url, "_blank", "noopener"));
       }
 
@@ -414,7 +422,13 @@
   function renderSkills() {
     const columns = document.getElementById("skillsColumns");
     if (!columns) return;
-    columns.innerHTML = "";
+    if (columns.children.length) {
+      CONTENT.skills.columns.forEach((c, i) => {
+        const nameEl = columns.children[i] && columns.children[i].querySelector(".column-name");
+        if (nameEl) nameEl.textContent = c.name[currentLang];
+      });
+      return;
+    }
     CONTENT.skills.columns.forEach((c, i) => {
       const col = document.createElement("div");
       col.className = "skill-column reveal";
@@ -455,25 +469,32 @@
     const row = document.getElementById("statsRow");
     if (!row) return;
     const counts = row.querySelectorAll(".count");
+    const labels = row.querySelectorAll(".stat-label");
     CONTENT.stats.forEach((s, i) => {
       const el = counts[i];
-      if (!el) return;
-      el.dataset.target = String(s.value);
-      el.dataset.suffix = s.suffix || "";
-      el.textContent = "0";
-      const label = row.querySelectorAll(".stat-label")[i];
-      if (label) label.textContent = s.label[currentLang];
+      if (el) {
+        el.dataset.target = String(s.value);
+        el.dataset.suffix = s.suffix || "";
+      }
+      if (labels[i]) labels[i].textContent = s.label[currentLang];
     });
-    initCounters();
   }
 
   function renderSocials() {
     const links = document.getElementById("footerLinks");
     if (!links) return;
-    links.innerHTML = "";
     const SOCIAL_LABELS = {
       "Email": { en: "Email", ru: "Почта" }
     };
+    if (links.children.length) {
+      CONTENT.footer.socials.forEach((s, i) => {
+        const el = links.children[i];
+        if (!el) return;
+        const label = (SOCIAL_LABELS[s.label] && SOCIAL_LABELS[s.label][currentLang]) || s.label;
+        if (el.dataset.busy !== "1") el.textContent = label;
+      });
+      return;
+    }
     const SAFE_SCHEMES = /^(https?:|mailto:|tel:)/i;
     CONTENT.footer.socials.forEach((s) => {
       const isEmail = s.label === "Email" || s.label.toLowerCase().includes("email") || s.url.startsWith("mailto:");
@@ -486,8 +507,12 @@
           const label = el.textContent;
           try {
             await navigator.clipboard.writeText(CONTENT.contact.email);
+            el.dataset.busy = "1";
             el.textContent = "Copied!";
-            setTimeout(() => { el.textContent = label; }, 1600);
+            setTimeout(() => {
+              el.textContent = label;
+              el.dataset.busy = "";
+            }, 1600);
           } catch (err) {
             window.location.href = "mailto:" + CONTENT.contact.email;
           }
@@ -510,21 +535,24 @@
     if (email) {
       email.textContent = CONTENT.contact.email;
       email.href = href;
-      email.addEventListener("click", async (e) => {
-        e.preventDefault();
-        try {
-          await navigator.clipboard.writeText(CONTENT.contact.email);
-          email.classList.add("is-copied");
-          const label = email.textContent;
-          email.textContent = "Copied!";
-          setTimeout(() => {
-            email.textContent = label;
-            email.classList.remove("is-copied");
-          }, 1600);
-        } catch (err) {
-          window.location.href = href;
-        }
-      });
+      if (!email.dataset.bound) {
+        email.dataset.bound = "1";
+        email.addEventListener("click", async (e) => {
+          e.preventDefault();
+          try {
+            await navigator.clipboard.writeText(CONTENT.contact.email);
+            email.classList.add("is-copied");
+            const label = email.textContent;
+            email.textContent = "Copied!";
+            setTimeout(() => {
+              email.textContent = label;
+              email.classList.remove("is-copied");
+            }, 1600);
+          } catch (err) {
+            window.location.href = href;
+          }
+        });
+      }
     }
     if (cta) cta.href = href;
   }
@@ -661,6 +689,7 @@
     }
     buildMarquee();
     setLang(currentLang);
+    initCounters();
   }
 
   function buildMarquee() {
@@ -711,8 +740,7 @@
   }
 
   function renderChannels() {
-    if (!contactChannels) return;
-    contactChannels.innerHTML = "";
+    if (!contactChannels || contactChannels.children.length) return;
     const icons = {
       Max: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3.2"/><path d="M12 2.5v3.3M12 18.2v3.3M2.5 12h3.3M18.2 12h3.3M5.3 5.3l2.4 2.4M16.3 16.3l2.4 2.4M18.7 5.3l-2.4 2.4M7.7 16.3l-2.4 2.4"/></svg>',
       Telegram: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2 11 13"/><path d="M22 2 15 22l-4-9-9-4Z"/></svg>',
