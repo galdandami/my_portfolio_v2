@@ -510,6 +510,21 @@
     if (email) {
       email.textContent = CONTENT.contact.email;
       email.href = href;
+      email.addEventListener("click", async (e) => {
+        e.preventDefault();
+        try {
+          await navigator.clipboard.writeText(CONTENT.contact.email);
+          email.classList.add("is-copied");
+          const label = email.textContent;
+          email.textContent = "Copied!";
+          setTimeout(() => {
+            email.textContent = label;
+            email.classList.remove("is-copied");
+          }, 1600);
+        } catch (err) {
+          window.location.href = href;
+        }
+      });
     }
     if (cta) cta.href = href;
   }

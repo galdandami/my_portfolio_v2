@@ -813,6 +813,8 @@ body.cursor-hidden .cursor-glow { opacity: 0; }
 
 .contact-email:hover { color: var(--accent-3); border-color: var(--accent-3); }
 
+.contact-email.is-copied { color: #22c55e; border-color: #22c55e; }
+
 /* ============ Footer ============ */
 .footer { border-top: 1px solid var(--border-subtle); padding: 24px 0; }
 
