@@ -89,6 +89,8 @@
       "lbl.experience": "Experience",
       "lbl.available": "Available",
       "lbl.status": "Status",
+      "lbl.log": "Console log",
+      "lbl.comment": "Comment",
       "lbl.cta": "Button text",
       "lbl.works": "Works",
       "lbl.about": "About",
@@ -209,6 +211,8 @@
       "lbl.experience": "Опыт",
       "lbl.available": "Доступен",
       "lbl.status": "Статус",
+      "lbl.log": "Console log",
+      "lbl.comment": "Комментарий",
       "lbl.cta": "Текст кнопки",
       "lbl.works": "Работы",
       "lbl.about": "Обо мне",
@@ -668,7 +672,9 @@
         stack: val($("f-code-stack")),
         experience: { en: val($("f-code-exp-en")), ru: val($("f-code-exp-ru")) },
         available: $("f-code-avail").checked,
-        status: pairVal("f-code-status")
+        status: pairVal("f-code-status"),
+        log: pairVal("f-code-log"),
+        comment: pairVal("f-code-comment")
       },
       nav: {
         works: pairVal("f-nav-works"),
@@ -720,6 +726,8 @@
     set("f-code-exp-en", c.code.experience.en); set("f-code-exp-ru", c.code.experience.ru);
     $("f-code-avail").checked = Boolean(c.code.available);
     set("f-code-status-en", c.code.status.en); set("f-code-status-ru", c.code.status.ru);
+    set("f-code-log-en", c.code.log.en); set("f-code-log-ru", c.code.log.ru);
+    set("f-code-comment-en", c.code.comment.en); set("f-code-comment-ru", c.code.comment.ru);
     set("f-nav-works-en", c.nav.works.en); set("f-nav-works-ru", c.nav.works.ru);
     set("f-nav-about-en", c.nav.about.en); set("f-nav-about-ru", c.nav.about.ru);
     set("f-nav-stack-en", c.nav.stack.en); set("f-nav-stack-ru", c.nav.stack.ru);
@@ -925,7 +933,9 @@
         stack: c.code && (typeof c.code.stack === "string" ? c.code.stack : (c.code.stack && c.code.stack.en)) || d.code.stack,
         experience: normPair(c.code && c.code.experience, d.code.experience),
         available: c.code ? Boolean(c.code.available) : d.code.available,
-        status: normPair(c.code && c.code.status, d.code.status)
+        status: normPair(c.code && c.code.status, d.code.status),
+        log: normPair(c.code && c.code.log, d.code.log),
+        comment: normPair(c.code && c.code.comment, d.code.comment)
       },
       nav: {
         works: normPair(c.nav && c.nav.works, d.nav.works),
