@@ -1237,7 +1237,19 @@ body.is-loaded .hero [data-hero="code"] { animation-delay: 0.62s; }
   stroke-dashoffset: 125.6;
 }
 
-.to-top-arrow { position: relative; z-index: 1; font-size: 17px; line-height: 1; }
+.to-top-arrow {
+  position: relative;
+  z-index: 1;
+  width: 18px;
+  height: 18px;
+  color: var(--text-primary);
+  transition: transform 0.3s var(--ease-out), color 0.3s ease;
+}
+
+.to-top:hover .to-top-arrow {
+  color: var(--accent);
+  transform: translateY(-2px);
+}
 
 /* ============ Button ripple ============ */
 .ripple {
