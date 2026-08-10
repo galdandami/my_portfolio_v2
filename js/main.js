@@ -241,11 +241,40 @@
 
   /* ============ Nav on scroll ============ */
   const nav = document.getElementById("nav");
+  const progress = document.getElementById("scrollProgress");
+  const toTop = document.getElementById("toTop");
+  const toTopCircle = toTop ? toTop.querySelector("circle") : null;
+  const TOP_CIRCUMFERENCE = 125.6;
+
   const onScroll = () => {
     nav.classList.toggle("is-scrolled", window.scrollY > 24);
+    const max = document.documentElement.scrollHeight - window.innerHeight;
+    const p = max > 0 ? Math.min(window.scrollY / max, 1) : 0;
+    if (progress) progress.style.transform = "scaleX(" + p + ")";
+    if (toTop) toTop.classList.toggle("is-visible", window.scrollY > 600);
+    if (toTopCircle) toTopCircle.style.strokeDashoffset = String(TOP_CIRCUMFERENCE * (1 - p));
   };
   window.addEventListener("scroll", onScroll, { passive: true });
   onScroll();
+
+  if (toTop) toTop.addEventListener("click", () => {
+    window.scrollTo({ top: 0, behavior: reduceMotion ? "auto" : "smooth" });
+  });
+
+  /* ============ Button ripple ============ */
+  document.addEventListener("click", (e) => {
+    const btn = e.target.closest(".btn");
+    if (!btn || reduceMotion) return;
+    const r = btn.getBoundingClientRect();
+    const d = Math.max(r.width, r.height);
+    const span = document.createElement("span");
+    span.className = "ripple";
+    span.style.width = span.style.height = d + "px";
+    span.style.left = e.clientX - r.left - d / 2 + "px";
+    span.style.top = e.clientY - r.top - d / 2 + "px";
+    btn.appendChild(span);
+    setTimeout(() => span.remove(), 650);
+  });
 
   /* ============ Burger menu ============ */
   const burger = document.getElementById("burger");
@@ -379,6 +408,7 @@
     });
     initReveal();
     bindTilt();
+    bindSpotlight();
   }
 
   const SKILL_MARKS = ["", "mark-pink", "mark-cyan"];
@@ -420,6 +450,7 @@
       columns.appendChild(col);
     });
     initReveal();
+    bindSpotlight();
   }
 
   function renderStats() {
@@ -557,6 +588,17 @@
     });
   }
 
+  function bindSpotlight() {
+    if (!finePointer || reduceMotion) return;
+    document.querySelectorAll(".project-card, .skill-column").forEach((el) => {
+      el.addEventListener("mousemove", (e) => {
+        const r = el.getBoundingClientRect();
+        el.style.setProperty("--mx", (e.clientX - r.left) + "px");
+        el.style.setProperty("--my", (e.clientY - r.top) + "px");
+      });
+    });
+  }
+
   /* ============ Code window typing ============ */
   const codeWindow = document.getElementById("codeWindow");
   const codeLines = codeWindow ? Array.from(codeWindow.querySelectorAll(".code-line")) : [];
@@ -604,8 +646,37 @@
         /* fallback to defaults */
       }
     }
+    buildMarquee();
     setLang(currentLang);
   }
+
+  function buildMarquee() {
+    const track = document.getElementById("marqueeTrack");
+    if (!track || track.children.length) return;
+    const items = [];
+    ((CONTENT.skills && CONTENT.skills.columns) || []).forEach((c) => {
+      (c.items || []).forEach((it) => items.push(it));
+    });
+    if (!items.length) return;
+    const makeGroup = () => {
+      const g = document.createElement("div");
+      g.className = "marquee-group";
+      items.forEach((it) => {
+        const s = document.createElement("span");
+        s.className = "marquee-item";
+        s.textContent = it;
+        g.appendChild(s);
+      });
+      return g;
+    };
+    track.appendChild(makeGroup());
+    track.appendChild(makeGroup());
+  }
+
+  /* ============ Hero entrance trigger ============ */
+  const addLoaded = () => document.body.classList.add("is-loaded");
+  if (document.readyState === "complete") addLoaded();
+  else window.addEventListener("load", addLoaded);
 
   /* ============ Contact modal ============ */
   const contactModal = document.getElementById("contactModal");

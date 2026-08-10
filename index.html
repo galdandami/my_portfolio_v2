@@ -1,16 +1,17 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Danis Galiullin — Web Developer</title>
-  <meta name="description" content="Frontend developer with 4+ years of experience. Building fast, reliable and beautiful websites and web apps — from landing pages to complex web applications.">
+  <title>Danis Galiullin вЂ” Web Developer</title>
+  <meta name="description" content="Frontend developer with 4+ years of experience. Building fast, reliable and beautiful websites and web apps вЂ” from landing pages to complex web applications.">
   <meta name="theme-color" content="#0A0A0B">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='6' fill='%23A855F7'/%3E%3C/svg%3E">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/styles.css">
+  <script>document.documentElement.classList.add("js");</script>
 </head>
 <body>
 
@@ -20,11 +21,13 @@
 
   <div class="noise" aria-hidden="true"></div>
 
+  <div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
+
   <canvas id="bgCanvas" class="bg-canvas" aria-hidden="true"></canvas>
 
   <header class="nav" id="nav">
     <div class="container nav-inner">
-      <a href="#hero" class="logo magnetic" aria-label="Danis Galiullin — home" data-i18n-aria="nav.home">
+      <a href="#hero" class="logo magnetic" aria-label="Danis Galiullin вЂ” home" data-i18n-aria="nav.home">
         <span class="logo-mark"></span>
         <span class="logo-name">Danis Galiullin</span>
       </a>
@@ -39,7 +42,7 @@
       <div class="nav-right">
         <div class="lang-toggle" role="group" aria-label="Language" data-i18n-aria="nav.lang">
           <button class="lang-btn is-active" data-lang="en" aria-label="English">EN</button>
-          <button class="lang-btn" data-lang="ru" aria-label="Русский">RU</button>
+          <button class="lang-btn" data-lang="ru" aria-label="Р СѓСЃСЃРєРёР№">RU</button>
         </div>
 
         <a href="#contact" class="btn btn-accent btn-sm nav-cta magnetic" data-i18n="nav.cta">Contact me</a>
@@ -61,27 +64,27 @@
       <div class="streak streak-2" aria-hidden="true"></div>
 
       <div class="container hero-inner">
-        <div class="badge reveal">
+        <div class="badge" data-hero="badge">
           <span class="badge-dot"></span>
           <span class="badge-text" data-i18n="badge">Open to new projects</span>
         </div>
 
-        <h1 class="hero-title reveal">
+        <h1 class="hero-title" data-hero="title">
           <span class="hero-line" data-i18n="hero.line1">I build websites and web apps,</span>
           <span class="hero-line hero-line-accent" data-i18n="hero.line2">that solve business problems</span>
         </h1>
 
-        <p class="hero-subtitle reveal" data-i18n="hero.sub">
+        <p class="hero-subtitle" data-hero="sub" data-i18n="hero.sub">
           Frontend developer with 4+ years of experience. Turning ideas into fast, reliable
-          and beautiful digital products — from landing pages to complex web applications.
+          and beautiful digital products вЂ” from landing pages to complex web applications.
         </p>
 
-        <div class="cta-row reveal">
+        <div class="cta-row" data-hero="cta">
           <a href="#projects" class="btn btn-accent magnetic" data-i18n="cta.works">View my work</a>
           <a href="#contact" class="btn btn-outline magnetic" data-i18n="cta.contact">Contact</a>
         </div>
 
-        <div class="code-window reveal" id="codeWindow" aria-label="developer.js code example" data-i18n-aria="code.aria">
+        <div class="code-window" id="codeWindow" data-hero="code" aria-label="developer.js code example" data-i18n-aria="code.aria">
           <div class="code-header">
             <div class="traffic-lights">
               <span class="light light-red"></span>
@@ -91,7 +94,7 @@
             <span class="code-tab">developer.js</span>
           </div>
           <div class="code-body">
-            <div class="code-line"><span class="t-comment" data-i18n="code.comment">// portfolio.js — main config</span></div>
+            <div class="code-line"><span class="t-comment" data-i18n="code.comment">// portfolio.js вЂ” main config</span></div>
             <div class="code-line"><span class="t-keyword">const</span> <span class="t-ident">developer</span> <span class="t-punc">= {</span></div>
             <div class="code-line code-indent"><span class="t-prop">name:</span> <span class="t-string" data-i18n="code.name">Danis</span><span class="t-punc">,</span></div>
             <div class="code-line code-indent"><span class="t-prop">role:</span> <span class="t-string" data-i18n="code.role">"Frontend Developer"</span><span class="t-punc">,</span></div>
@@ -107,6 +110,11 @@
         </div>
       </div>
     </section>
+
+    <!-- TECH MARQUEE -->
+    <div class="marquee" aria-hidden="true">
+      <div class="marquee-track" id="marqueeTrack"></div>
+    </div>
 
     <!-- STATS -->
     <section class="stats" id="about">
@@ -149,10 +157,10 @@
         <div class="cards-row" id="projectsGrid">
           <article class="project-card tilt reveal">
             <div class="card-cover">
-              <img src="https://images.unsplash.com/photo-1657812159075-7f0abd98f7b8?q=80&w=1080&auto=format&fit=crop" alt="Nova — e-commerce store" loading="lazy">
+              <img src="https://images.unsplash.com/photo-1657812159075-7f0abd98f7b8?q=80&w=1080&auto=format&fit=crop" alt="Nova вЂ” e-commerce store" loading="lazy">
             </div>
             <div class="card-content">
-              <h3 class="card-title" data-i18n="proj.1.title">Nova — e-commerce store</h3>
+              <h3 class="card-title" data-i18n="proj.1.title">Nova вЂ” e-commerce store</h3>
               <p class="card-desc" data-i18n="proj.1.desc">E-commerce built with Next.js: cart, Stripe payments and a personal account. After the redesign, conversion grew by 32%.</p>
               <div class="tags">
                 <span class="tag">Next.js</span>
@@ -164,10 +172,10 @@
 
           <article class="project-card tilt reveal">
             <div class="card-cover">
-              <img src="https://images.unsplash.com/photo-1745270917331-787c80129680?q=80&w=1080&auto=format&fit=crop" alt="Pulse — SaaS analytics" loading="lazy">
+              <img src="https://images.unsplash.com/photo-1745270917331-787c80129680?q=80&w=1080&auto=format&fit=crop" alt="Pulse вЂ” SaaS analytics" loading="lazy">
             </div>
             <div class="card-content">
-              <h3 class="card-title" data-i18n="proj.2.title">Pulse — SaaS analytics</h3>
+              <h3 class="card-title" data-i18n="proj.2.title">Pulse вЂ” SaaS analytics</h3>
               <p class="card-desc" data-i18n="proj.2.desc">A real-time dashboard with reports and charts for 500+ users. Data updates without a page reload.</p>
               <div class="tags">
                 <span class="tag">React</span>
@@ -179,11 +187,11 @@
 
           <article class="project-card tilt reveal">
             <div class="card-cover">
-              <img src="https://images.unsplash.com/photo-1763568258143-904ea924ac53?q=80&w=1080&auto=format&fit=crop" alt="Stellar — startup landing page" loading="lazy">
+              <img src="https://images.unsplash.com/photo-1763568258143-904ea924ac53?q=80&w=1080&auto=format&fit=crop" alt="Stellar вЂ” startup landing page" loading="lazy">
             </div>
             <div class="card-content">
-              <h3 class="card-title" data-i18n="proj.3.title">Stellar — startup landing page</h3>
-              <p class="card-desc" data-i18n="proj.3.desc">A conversion-focused one-pager with animations and a dark theme. Performance — 98/100 on Lighthouse.</p>
+              <h3 class="card-title" data-i18n="proj.3.title">Stellar вЂ” startup landing page</h3>
+              <p class="card-desc" data-i18n="proj.3.desc">A conversion-focused one-pager with animations and a dark theme. Performance вЂ” 98/100 on Lighthouse.</p>
               <div class="tags">
                 <span class="tag">Next.js</span>
                 <span class="tag">Tailwind</span>
@@ -209,12 +217,12 @@
               <span class="column-mark"></span>
               <span class="column-name" data-i18n="skills.frontend">Frontend</span>
             </div>
-            <div class="skill-item"><span class="bullet">▹</span><span class="skill-label">React</span></div>
-            <div class="skill-item"><span class="bullet">▹</span><span class="skill-label">Next.js</span></div>
-            <div class="skill-item"><span class="bullet">▹</span><span class="skill-label">TypeScript</span></div>
-            <div class="skill-item"><span class="bullet">▹</span><span class="skill-label">Tailwind CSS</span></div>
-            <div class="skill-item"><span class="bullet">▹</span><span class="skill-label">Redux Toolkit</span></div>
-            <div class="skill-item"><span class="bullet">▹</span><span class="skill-label">Vue.js</span></div>
+            <div class="skill-item"><span class="bullet">в–№</span><span class="skill-label">React</span></div>
+            <div class="skill-item"><span class="bullet">в–№</span><span class="skill-label">Next.js</span></div>
+            <div class="skill-item"><span class="bullet">в–№</span><span class="skill-label">TypeScript</span></div>
+            <div class="skill-item"><span class="bullet">в–№</span><span class="skill-label">Tailwind CSS</span></div>
+            <div class="skill-item"><span class="bullet">в–№</span><span class="skill-label">Redux Toolkit</span></div>
+            <div class="skill-item"><span class="bullet">в–№</span><span class="skill-label">Vue.js</span></div>
           </div>
 
           <div class="skill-column reveal">
@@ -222,12 +230,12 @@
               <span class="column-mark mark-pink"></span>
               <span class="column-name" data-i18n="skills.backend">Backend</span>
             </div>
-            <div class="skill-item"><span class="bullet">▹</span><span class="skill-label">Node.js</span></div>
-            <div class="skill-item"><span class="bullet">▹</span><span class="skill-label">Express</span></div>
-            <div class="skill-item"><span class="bullet">▹</span><span class="skill-label">PostgreSQL</span></div>
-            <div class="skill-item"><span class="bullet">▹</span><span class="skill-label">MongoDB</span></div>
-            <div class="skill-item"><span class="bullet">▹</span><span class="skill-label">REST &amp; GraphQL</span></div>
-            <div class="skill-item"><span class="bullet">▹</span><span class="skill-label">WebSockets</span></div>
+            <div class="skill-item"><span class="bullet">в–№</span><span class="skill-label">Node.js</span></div>
+            <div class="skill-item"><span class="bullet">в–№</span><span class="skill-label">Express</span></div>
+            <div class="skill-item"><span class="bullet">в–№</span><span class="skill-label">PostgreSQL</span></div>
+            <div class="skill-item"><span class="bullet">в–№</span><span class="skill-label">MongoDB</span></div>
+            <div class="skill-item"><span class="bullet">в–№</span><span class="skill-label">REST &amp; GraphQL</span></div>
+            <div class="skill-item"><span class="bullet">в–№</span><span class="skill-label">WebSockets</span></div>
           </div>
 
           <div class="skill-column reveal">
@@ -235,12 +243,12 @@
               <span class="column-mark mark-cyan"></span>
               <span class="column-name" data-i18n="skills.tools">Tools</span>
             </div>
-            <div class="skill-item"><span class="bullet">▹</span><span class="skill-label">Git &amp; GitHub</span></div>
-            <div class="skill-item"><span class="bullet">▹</span><span class="skill-label">Docker</span></div>
-            <div class="skill-item"><span class="bullet">▹</span><span class="skill-label">CI/CD</span></div>
-            <div class="skill-item"><span class="bullet">▹</span><span class="skill-label">Figma</span></div>
-            <div class="skill-item"><span class="bullet">▹</span><span class="skill-label">Vite</span></div>
-            <div class="skill-item"><span class="bullet">▹</span><span class="skill-label">Jest</span></div>
+            <div class="skill-item"><span class="bullet">в–№</span><span class="skill-label">Git &amp; GitHub</span></div>
+            <div class="skill-item"><span class="bullet">в–№</span><span class="skill-label">Docker</span></div>
+            <div class="skill-item"><span class="bullet">в–№</span><span class="skill-label">CI/CD</span></div>
+            <div class="skill-item"><span class="bullet">в–№</span><span class="skill-label">Figma</span></div>
+            <div class="skill-item"><span class="bullet">в–№</span><span class="skill-label">Vite</span></div>
+            <div class="skill-item"><span class="bullet">в–№</span><span class="skill-label">Jest</span></div>
           </div>
         </div>
       </div>
@@ -252,7 +260,7 @@
         <div class="contact-inner reveal">
           <span class="kicker" data-i18n="contact.kicker">// Contacts</span>
           <h2 class="contact-title" data-i18n="contact.title">Have a project? Let's talk</h2>
-          <p class="contact-sub" data-i18n="contact.sub">Tell me about your task — I'll reply within a day with a work plan and timeline.</p>
+          <p class="contact-sub" data-i18n="contact.sub">Tell me about your task вЂ” I'll reply within a day with a work plan and timeline.</p>
           <a href="#" class="btn btn-accent btn-lg magnetic modal-trigger" id="contactCta" data-i18n="contact.cta">Send a message</a>
           <a href="mailto:hello@danis.dev" class="contact-email" id="contactEmail">hello@danis.dev</a>
         </div>
@@ -263,11 +271,11 @@
   <!-- CONTACT MODAL -->
   <div class="modal-backdrop" id="contactModal" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="contactModalTitle">
     <div class="contact-modal" role="dialog" aria-modal="true" aria-labelledby="contactModalTitle">
-      <button class="contact-modal-close" id="contactModalClose" aria-label="Close modal" data-i18n-aria="modal.close">×</button>
+      <button class="contact-modal-close" id="contactModalClose" aria-label="Close modal" data-i18n-aria="modal.close">Г—</button>
       <div class="contact-modal-head">
         <span class="kicker" data-i18n="modal.kicker">// Contacts</span>
         <h2 class="contact-modal-title" id="contactModalTitle" data-i18n="modal.title">Send a request</h2>
-        <p class="contact-modal-sub" data-i18n="modal.sub">Pick a channel or leave a request — I'll reply within a day.</p>
+        <p class="contact-modal-sub" data-i18n="modal.sub">Pick a channel or leave a request вЂ” I'll reply within a day.</p>
       </div>
 
       <div class="contact-channels" id="contactChannels"></div>
@@ -300,9 +308,22 @@
     </div>
   </div>
 
+  <button class="to-top" id="toTop" aria-label="Back to top">
+    <svg viewBox="0 0 48 48" aria-hidden="true">
+      <defs>
+        <linearGradient id="toTopGrad" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="#A855F7"></stop>
+          <stop offset="1" stop-color="#22D3EE"></stop>
+        </linearGradient>
+      </defs>
+      <circle cx="24" cy="24" r="20"></circle>
+    </svg>
+    <span class="to-top-arrow">в†‘</span>
+  </button>
+
   <footer class="footer">
     <div class="container footer-inner">
-      <span class="copyright" id="footerCopy" data-i18n="footer.copyright">© 2026 Danis Galiullin — Web Developer</span>
+      <span class="copyright" id="footerCopy" data-i18n="footer.copyright">В© 2026 Danis Galiullin вЂ” Web Developer</span>
       <div class="footer-links" id="footerLinks">
         <a href="https://github.com" target="_blank" rel="noopener" class="footer-link">GitHub</a>
         <a href="https://t.me" target="_blank" rel="noopener" class="footer-link">Telegram</a>
@@ -312,8 +333,8 @@
   </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="js/config.js?v=13"></script>
-  <script src="js/content.js?v=13"></script>
-  <script src="js/main.js?v=13"></script>
+  <script src="js/config.js?v=14"></script>
+  <script src="js/content.js?v=14"></script>
+  <script src="js/main.js?v=14"></script>
 </body>
 </html>

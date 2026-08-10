@@ -1057,3 +1057,236 @@ body.modal-open { overflow: hidden; }
   .contact-form .field-row { grid-template-columns: 1fr; }
   .contact-modal { padding: 26px 20px; }
 }
+
+/* ============ Scroll progress bar ============ */
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  z-index: 2001;
+  background: linear-gradient(90deg, var(--accent), var(--accent-2), var(--accent-3));
+  box-shadow: 0 0 14px rgba(168, 85, 247, 0.65);
+  transform: scaleX(0);
+  transform-origin: left;
+  pointer-events: none;
+  will-change: transform;
+}
+
+/* ============ Hero staggered entrance ============ */
+.js .hero [data-hero] { opacity: 0; }
+
+body.is-loaded .hero [data-hero] {
+  animation: heroIn 0.9s var(--ease-out) both;
+}
+
+body.is-loaded .hero [data-hero="badge"] { animation-delay: 0.1s; }
+body.is-loaded .hero [data-hero="title"] { animation-delay: 0.2s; }
+body.is-loaded .hero [data-hero="sub"] { animation-delay: 0.34s; }
+body.is-loaded .hero [data-hero="cta"] { animation-delay: 0.46s; }
+body.is-loaded .hero [data-hero="code"] { animation-delay: 0.62s; }
+
+@keyframes heroIn {
+  from { opacity: 0; transform: translateY(28px); filter: blur(6px); }
+  to { opacity: 1; transform: translateY(0); filter: blur(0); }
+}
+
+/* ============ Tech marquee ============ */
+.marquee {
+  position: relative;
+  padding: 22px 0;
+  overflow: hidden;
+  border-top: 1px solid var(--border-subtle);
+  border-bottom: 1px solid var(--border-subtle);
+  background: linear-gradient(90deg, rgba(168, 85, 247, 0.05), transparent 35%, transparent 65%, rgba(236, 72, 153, 0.05));
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 14%, #000 86%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 14%, #000 86%, transparent);
+}
+
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marqueeScroll 34s linear infinite;
+}
+
+.marquee:hover .marquee-track { animation-play-state: paused; }
+
+.marquee-group { display: flex; align-items: center; flex-shrink: 0; }
+
+.marquee-item {
+  display: flex;
+  align-items: center;
+  gap: 48px;
+  padding: 6px 24px;
+  font-family: var(--font-mono);
+  font-size: 14px;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.marquee-item::after {
+  content: "✦";
+  font-size: 10px;
+  color: var(--accent);
+  opacity: 0.75;
+}
+
+@keyframes marqueeScroll { to { transform: translateX(-50%); } }
+
+/* ============ Spotlight hover ============ */
+.project-card { position: relative; }
+
+.project-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  background: radial-gradient(340px circle at var(--mx, 50%) var(--my, 50%), rgba(168, 85, 247, 0.16), transparent 65%);
+}
+
+.project-card:hover::after { opacity: 1; }
+
+.card-cover, .card-content { position: relative; z-index: 2; }
+
+.skill-column { position: relative; overflow: hidden; }
+
+.skill-column::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  background: radial-gradient(300px circle at var(--mx, 50%) var(--my, 50%), rgba(34, 211, 238, 0.1), transparent 65%);
+}
+
+.skill-column:hover::after { opacity: 1; }
+
+.skill-column > * { position: relative; z-index: 1; }
+
+/* ============ Animated code-window border ============ */
+.code-window {
+  border: 1px solid transparent;
+  background:
+    linear-gradient(var(--surface), var(--surface)) padding-box,
+    linear-gradient(120deg, rgba(168, 85, 247, 0.55), rgba(236, 72, 153, 0.45), rgba(34, 211, 238, 0.5), rgba(168, 85, 247, 0.55)) border-box;
+  background-size: 320% 320%;
+  animation: borderFlow 7s ease infinite;
+  transition: box-shadow 0.5s ease;
+}
+
+.code-window:hover {
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.5), 0 0 44px rgba(168, 85, 247, 0.22);
+}
+
+@keyframes borderFlow {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+/* ============ Back to top ============ */
+.to-top {
+  position: fixed;
+  right: 26px;
+  bottom: 26px;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  z-index: 1500;
+  background: rgba(19, 19, 24, 0.9);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-primary);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(14px);
+  transition: opacity 0.35s ease, transform 0.35s var(--ease-out), visibility 0.35s, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.to-top.is-visible { opacity: 1; visibility: visible; transform: translateY(0); }
+
+.to-top:hover {
+  border-color: var(--accent);
+  box-shadow: 0 0 24px rgba(168, 85, 247, 0.35);
+}
+
+.to-top svg {
+  position: absolute;
+  inset: -1px;
+  width: 50px;
+  height: 50px;
+  transform: rotate(-90deg);
+  pointer-events: none;
+}
+
+.to-top circle {
+  fill: none;
+  stroke: url(#toTopGrad);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-dasharray: 125.6;
+  stroke-dashoffset: 125.6;
+}
+
+.to-top-arrow { position: relative; z-index: 1; font-size: 17px; line-height: 1; }
+
+/* ============ Button ripple ============ */
+.ripple {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.35);
+  transform: scale(0);
+  animation: rippleAnim 0.6s ease-out forwards;
+  pointer-events: none;
+}
+
+@keyframes rippleAnim { to { transform: scale(3); opacity: 0; } }
+
+/* ============ Nav CTA pulse ============ */
+.nav-cta { animation: ctaPulse 3.2s ease-in-out infinite; }
+
+@keyframes ctaPulse {
+  0%, 100% { box-shadow: 0 4px 24px rgba(168, 85, 247, 0.35); }
+  50% { box-shadow: 0 4px 32px rgba(168, 85, 247, 0.65); }
+}
+
+/* ============ Mobile menu stagger ============ */
+@media (max-width: 900px) {
+  .nav-links.is-open .nav-link { animation: navLinkIn 0.45s var(--ease-out) both; }
+  .nav-links.is-open .nav-link:nth-child(1) { animation-delay: 0.08s; }
+  .nav-links.is-open .nav-link:nth-child(2) { animation-delay: 0.16s; }
+  .nav-links.is-open .nav-link:nth-child(3) { animation-delay: 0.24s; }
+  .nav-links.is-open .nav-link:nth-child(4) { animation-delay: 0.32s; }
+}
+
+@keyframes navLinkIn {
+  from { opacity: 0; transform: translateX(26px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+/* ============ Channel icons ============ */
+.contact-channel svg { transition: transform 0.35s var(--ease-out); }
+
+.contact-channel:hover svg { transform: translateY(-2px) scale(1.15); }
+
+/* ============ Reduced motion & responsive ============ */
+@media (prefers-reduced-motion: reduce) {
+  .scroll-progress, .marquee-track, .nav-cta, .code-window, .ripple { animation: none !important; }
+  body.is-loaded .hero [data-hero] { animation: none; opacity: 1; }
+}
+
+@media (max-width: 640px) {
+  .marquee { padding: 16px 0; }
+  .marquee-item { gap: 32px; padding: 4px 16px; font-size: 12px; }
+  .to-top { right: 18px; bottom: 18px; width: 42px; height: 42px; }
+  .to-top svg { width: 44px; height: 44px; }
+}
