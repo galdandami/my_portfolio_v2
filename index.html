@@ -292,13 +292,25 @@
             <input type="text" id="contactName" autocomplete="name" required>
           </div>
           <div class="field">
-            <span class="field-label" data-i18n="modal.reply">How to reach you</span>
-            <input type="text" id="contactReply" autocomplete="off" placeholder="max / telegram / email / phone number" required>
+            <span class="field-label" data-i18n="modal.projTitle">Project title</span>
+            <input type="text" id="contactTitle" autocomplete="off" placeholder="Nova e-commerce store, etc.">
           </div>
         </div>
-        <div class="field">
-          <span class="field-label" data-i18n="modal.projTitle">Project title</span>
-          <input type="text" id="contactTitle" autocomplete="off" placeholder="Nova e-commerce store, etc.">
+        <div class="field-row">
+          <div class="field">
+            <span class="field-label" data-i18n="modal.channel">Contact channel</span>
+            <select id="contactChannel" required>
+              <option value="" disabled selected data-i18n="modal.channelPlaceholder">Choose a channel</option>
+              <option value="Telegram">Telegram</option>
+              <option value="Max">Max</option>
+              <option value="Email">Email</option>
+              <option value="Phone">Phone</option>
+            </select>
+          </div>
+          <div class="field">
+            <span class="field-label" data-i18n="modal.contact">Contact</span>
+            <input type="text" id="contactContact" autocomplete="off" placeholder="@username / phone / email" required>
+          </div>
         </div>
         <div class="field">
           <span class="field-label" data-i18n="modal.msg">Project description</span>
@@ -325,8 +337,8 @@
   </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="js/config.js?v=17"></script>
-  <script src="js/content.js?v=17"></script>
-  <script src="js/main.js?v=17"></script>
+  <script src="js/config.js?v=18"></script>
+  <script src="js/content.js?v=18"></script>
+  <script src="js/main.js?v=18"></script>
 </body>
 </html>

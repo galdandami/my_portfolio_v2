@@ -775,7 +775,8 @@
   async function handleContactSubmit(e) {
     e.preventDefault();
     const name = document.getElementById("contactName");
-    const reply = document.getElementById("contactReply");
+    const channel = document.getElementById("contactChannel");
+    const contact = document.getElementById("contactContact");
     const title = document.getElementById("contactTitle");
     const msg = document.getElementById("contactMsg");
     const note = document.getElementById("contactNote");
@@ -784,25 +785,32 @@
     const originalLabel = submitBtn.textContent;
 
     const nameVal = (name && name.value || "").trim();
-    const replyVal = (reply && reply.value || "").trim();
+    const channelVal = (channel && channel.value || "").trim();
+    const contactVal = (contact && contact.value || "").trim();
     if (!nameVal) {
       markInvalid(name);
       name && name.focus();
       return;
     }
-    if (!replyVal) {
-      markInvalid(reply);
-      reply && reply.focus();
+    if (!channelVal) {
+      markInvalid(channel);
+      channel && channel.focus();
+      return;
+    }
+    if (!contactVal) {
+      markInvalid(contact);
+      contact && contact.focus();
       return;
     }
     clearInvalid(name);
-    clearInvalid(reply);
+    clearInvalid(channel);
+    clearInvalid(contact);
 
     submitBtn.disabled = true;
     submitBtn.textContent = "…";
     const payload = {
       name: nameVal,
-      contact: replyVal,
+      contact: channelVal + ": " + contactVal,
       title: (title && title.value || "").trim(),
       message: (msg && msg.value || "").trim(),
       note: (note && note.value || "").trim()
@@ -845,9 +853,10 @@
     }
   }
 
-  ["contactName", "contactReply"].forEach((id) => {
+  ["contactName", "contactChannel", "contactContact"].forEach((id) => {
     const el = document.getElementById(id);
     if (el) el.addEventListener("input", () => clearInvalid(el));
+    if (el) el.addEventListener("change", () => clearInvalid(el));
   });
 
   const modalTriggers = document.querySelectorAll(".modal-trigger");
