@@ -715,9 +715,9 @@
     set("f-hero-cta-works-en", c["cta.works"].en); set("f-hero-cta-works-ru", c["cta.works"].ru);
     set("f-hero-cta-contact-en", c["cta.contact"].en); set("f-hero-cta-contact-ru", c["cta.contact"].ru);
     set("f-code-name-en", c.code.name.en); set("f-code-name-ru", c.code.name.ru);
-    set("f-code-role", c.code.role);
+    set("f-code-role-en", c.code.role.en); set("f-code-role-ru", c.code.role.ru);
     set("f-code-stack", c.code.stack);
-    set("f-code-exp", c.code.experience);
+    set("f-code-exp-en", c.code.experience.en); set("f-code-exp-ru", c.code.experience.ru);
     $("f-code-avail").checked = Boolean(c.code.available);
     set("f-code-status-en", c.code.status.en); set("f-code-status-ru", c.code.status.ru);
     set("f-nav-works-en", c.nav.works.en); set("f-nav-works-ru", c.nav.works.ru);
@@ -921,9 +921,9 @@
       "cta.contact": normPair(c["cta.contact"], d["cta.contact"]),
       code: {
         name: normPair(c.code && c.code.name, d.code.name),
-        role: c.code && typeof c.code.role === "string" ? c.code.role : d.code.role,
-        stack: c.code && typeof c.code.stack === "string" ? c.code.stack : d.code.stack,
-        experience: c.code && typeof c.code.experience === "string" ? c.code.experience : d.code.experience,
+        role: normPair(c.code && c.code.role, d.code.role),
+        stack: c.code && (typeof c.code.stack === "string" ? c.code.stack : (c.code.stack && c.code.stack.en)) || d.code.stack,
+        experience: normPair(c.code && c.code.experience, d.code.experience),
         available: c.code ? Boolean(c.code.available) : d.code.available,
         status: normPair(c.code && c.code.status, d.code.status)
       },
