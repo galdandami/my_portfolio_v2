@@ -242,24 +242,15 @@
   /* ============ Nav on scroll ============ */
   const nav = document.getElementById("nav");
   const progress = document.getElementById("scrollProgress");
-  const toTop = document.getElementById("toTop");
-  const toTopCircle = toTop ? toTop.querySelector("circle") : null;
-  const TOP_CIRCUMFERENCE = 125.6;
 
   const onScroll = () => {
     nav.classList.toggle("is-scrolled", window.scrollY > 24);
     const max = document.documentElement.scrollHeight - window.innerHeight;
     const p = max > 0 ? Math.min(window.scrollY / max, 1) : 0;
     if (progress) progress.style.transform = "scaleX(" + p + ")";
-    if (toTop) toTop.classList.toggle("is-visible", window.scrollY > 600);
-    if (toTopCircle) toTopCircle.style.strokeDashoffset = String(TOP_CIRCUMFERENCE * (1 - p));
   };
   window.addEventListener("scroll", onScroll, { passive: true });
   onScroll();
-
-  if (toTop) toTop.addEventListener("click", () => {
-    window.scrollTo({ top: 0, behavior: reduceMotion ? "auto" : "smooth" });
-  });
 
   /* ============ Button ripple ============ */
   document.addEventListener("click", (e) => {
