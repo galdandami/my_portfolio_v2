@@ -31,8 +31,8 @@
       particles = Array.from({ length: count }, () => ({
         x: Math.random() * w,
         y: Math.random() * h,
-        vx: (Math.random() - 0.5) * 0.25,
-        vy: (Math.random() - 0.5) * 0.25,
+        vx: (Math.random() - 0.5) * 0.18,
+        vy: (Math.random() - 0.5) * 0.18,
         r: Math.random() * 1.6 + 0.8,
         c: PALETTE[Math.floor(Math.random() * PALETTE.length)]
       }));
@@ -49,22 +49,22 @@
       for (let i = 0; i < particles.length; i++) {
         const p = particles[i];
 
-        p.vx += (Math.random() - 0.5) * 0.03;
-        p.vy += (Math.random() - 0.5) * 0.03;
+        p.vx += (Math.random() - 0.5) * 0.02;
+        p.vy += (Math.random() - 0.5) * 0.02;
 
         const dxm = p.x - mouseX;
         const dym = p.y - mouseY;
         const dm = Math.hypot(dxm, dym);
         if (dm < MOUSE_RADIUS && dm > 0.001) {
-          const force = (1 - dm / MOUSE_RADIUS) * 1.1;
+          const force = (1 - dm / MOUSE_RADIUS) * 0.85;
           p.vx += (dxm / dm) * force;
           p.vy += (dym / dm) * force;
         }
 
         const speed = Math.hypot(p.vx, p.vy);
-        if (speed > 1.4) {
-          p.vx = (p.vx / speed) * 1.4;
-          p.vy = (p.vy / speed) * 1.4;
+        if (speed > 1.2) {
+          p.vx = (p.vx / speed) * 1.2;
+          p.vy = (p.vy / speed) * 1.2;
         }
         p.x += p.vx;
         p.y += p.vy;
