@@ -957,12 +957,12 @@ body.cursor-hidden .cursor-glow { opacity: 0; }
   border-radius: 50%;
   border: 1px solid var(--border-subtle);
   color: var(--text-muted);
-  font-size: 18px;
-  line-height: 1;
   display: grid;
   place-items: center;
   transition: all 0.25s ease;
 }
+
+.contact-modal-close svg { width: 16px; height: 16px; }
 
 .contact-modal-close:hover { border-color: var(--accent); color: var(--accent); }
 

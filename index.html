@@ -271,7 +271,12 @@
   <!-- CONTACT MODAL -->
   <div class="modal-backdrop" id="contactModal" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="contactModalTitle">
     <div class="contact-modal" role="dialog" aria-modal="true" aria-labelledby="contactModalTitle">
-      <button class="contact-modal-close" id="contactModalClose" aria-label="Close modal" data-i18n-aria="modal.close">Г—</button>
+      <button class="contact-modal-close" id="contactModalClose" aria-label="Close modal" data-i18n-aria="modal.close">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+          <path d="M18 6 6 18"></path>
+          <path d="m6 6 12 12"></path>
+        </svg>
+      </button>
       <div class="contact-modal-head">
         <span class="kicker" data-i18n="modal.kicker">// Contacts</span>
         <h2 class="contact-modal-title" id="contactModalTitle" data-i18n="modal.title">Send a request</h2>
@@ -292,7 +297,7 @@
           </div>
         </div>
         <div class="field">
-          <span class="field-label" data-i18n="modal.title">Project title</span>
+          <span class="field-label" data-i18n="modal.projTitle">Project title</span>
           <input type="text" id="contactTitle" autocomplete="off" placeholder="Nova e-commerce store, etc.">
         </div>
         <div class="field">
@@ -336,8 +341,8 @@
   </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="js/config.js?v=14"></script>
-  <script src="js/content.js?v=14"></script>
-  <script src="js/main.js?v=14"></script>
+  <script src="js/config.js?v=15"></script>
+  <script src="js/content.js?v=15"></script>
+  <script src="js/main.js?v=15"></script>
 </body>
 </html>

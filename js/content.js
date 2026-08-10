@@ -133,7 +133,7 @@ window.SITE_DEFAULTS = {
 
   modal: {
     kicker: { en: "// Contacts", ru: "// Контакты" },
-    title: { en: "Send a request", ru: "Отправить заявку" },
+    title: { en: "Write to me", ru: "Написать мне" },
     sub: {
       en: "Pick a channel or leave a request — I'll reply within a day.",
       ru: "Выберите канал связи или оставьте заявку — отвечу в течение дня."
@@ -141,7 +141,7 @@ window.SITE_DEFAULTS = {
     close: { en: "Close modal", ru: "Закрыть окно" },
     name: { en: "Name *", ru: "Имя *" },
     reply: { en: "How to reach you *", ru: "Как с вами связаться *" },
-    title: { en: "Project title", ru: "Название проекта" },
+    projTitle: { en: "Project title", ru: "Название проекта" },
     msg: { en: "Project description", ru: "Описание проекта" },
     note: { en: "Message for us", ru: "Сообщение для нас" },
     send: { en: "Send request", ru: "Отправить заявку" }
