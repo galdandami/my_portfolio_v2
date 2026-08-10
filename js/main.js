@@ -56,15 +56,15 @@
         const dym = p.y - mouseY;
         const dm = Math.hypot(dxm, dym);
         if (dm < MOUSE_RADIUS && dm > 0.001) {
-          const force = (1 - dm / MOUSE_RADIUS) * 2.2;
+          const force = (1 - dm / MOUSE_RADIUS) * 1.1;
           p.vx += (dxm / dm) * force;
           p.vy += (dym / dm) * force;
         }
 
         const speed = Math.hypot(p.vx, p.vy);
-        if (speed > 2.4) {
-          p.vx = (p.vx / speed) * 2.4;
-          p.vy = (p.vy / speed) * 2.4;
+        if (speed > 1.4) {
+          p.vx = (p.vx / speed) * 1.4;
+          p.vy = (p.vy / speed) * 1.4;
         }
         p.x += p.vx;
         p.y += p.vy;
