@@ -27,11 +27,19 @@ export default async function handler(req, res) {
   }
 
   try {
-    const upstream = await fetch(target, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ ...body, secret }),
-    });
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 20000);
+    let upstream;
+    try {
+      upstream = await fetch(target, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...body, secret }),
+        signal: controller.signal,
+      });
+    } finally {
+      clearTimeout(timer);
+    }
 
     const text = await upstream.text();
     let data;
@@ -43,6 +51,10 @@ export default async function handler(req, res) {
 
     res.status(upstream.status).json(data);
   } catch (err) {
-    res.status(502).json({ ok: false, error: "Backend unreachable" });
+    const timedOut = err && err.name === "AbortError";
+    res.status(timedOut ? 504 : 502).json({
+      ok: false,
+      error: timedOut ? "Backend timed out" : "Backend unreachable",
+    });
   }
 }
