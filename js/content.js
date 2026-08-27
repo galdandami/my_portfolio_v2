@@ -76,7 +76,7 @@ window.SITE_DEFAULTS = {
         ru: "E-commerce на Next.js: корзина, оплата через Stripe и личный кабинет. После редизайна конверсия выросла на 32%."
       },
       tags: ["Next.js", "Stripe", "PostgreSQL"],
-      image: "https://images.unsplash.com/photo-1657812159075-7f0abd98f7b8?q=80&w=1080&auto=format&fit=crop",
+      image: "https://images.unsplash.com/photo-1657812159075-7f0abd98f7b8?q=80&w=800&auto=format&fit=crop",
       url: ""
     },
     {
@@ -86,7 +86,7 @@ window.SITE_DEFAULTS = {
         ru: "Дашборд реального времени с отчётами и графиками для 500+ пользователей. Данные обновляются без перезагрузки страницы."
       },
       tags: ["React", "TypeScript", "D3.js"],
-      image: "https://images.unsplash.com/photo-1745270917331-787c80129680?q=80&w=1080&auto=format&fit=crop",
+      image: "https://images.unsplash.com/photo-1745270917331-787c80129680?q=80&w=800&auto=format&fit=crop",
       url: ""
     },
     {
@@ -96,7 +96,7 @@ window.SITE_DEFAULTS = {
         ru: "Продающий одностраничник с анимациями и тёмной темой. Производительность — 98/100 по Lighthouse."
       },
       tags: ["Next.js", "Tailwind", "Vercel"],
-      image: "https://images.unsplash.com/photo-1763568258143-904ea924ac53?q=80&w=1080&auto=format&fit=crop",
+      image: "https://images.unsplash.com/photo-1763568258143-904ea924ac53?q=80&w=800&auto=format&fit=crop",
       url: ""
     }
   ],

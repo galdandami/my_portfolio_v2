@@ -658,9 +658,9 @@
                 caret.style.bottom = "auto";
                 caret.style.top = `${line.offsetTop + line.offsetHeight / 2 - 8}px`;
               }
-            }, 180 + i * 220);
+            }, 40 + i * 60);
           });
-          if (caret) setTimeout(() => caret.classList.add("is-visible"), 400);
+          if (caret) setTimeout(() => caret.classList.add("is-visible"), 150);
         });
       },
       { threshold: 0.3 }
@@ -673,19 +673,26 @@
   initCounters();
 
   async function init() {
-    if (window.supabaseClient) {
-      try {
-        const { data, error } = await window.supabaseClient
-          .from("site_content")
-          .select("content")
-          .eq("id", 1)
-          .maybeSingle();
-        if (!error && data && data.content && Object.keys(data.content).length > 0) {
-          CONTENT = Object.assign({}, DEFAULTS, data.content);
+    try {
+      const url = window.SB_CONFIG && window.SB_CONFIG.url;
+      const anonKey = window.SB_CONFIG && window.SB_CONFIG.anonKey;
+      if (url && anonKey && url.startsWith("https://") && !anonKey.includes("PASTE")) {
+        const res = await fetch(url + "/rest/v1/site_content?id=eq.1&select=content", {
+          headers: {
+            apikey: anonKey,
+            Authorization: "Bearer " + anonKey
+          }
+        });
+        if (res.ok) {
+          const rows = await res.json();
+          const data = Array.isArray(rows) && rows[0];
+          if (data && data.content && typeof data.content === "object" && Object.keys(data.content).length > 0) {
+            CONTENT = Object.assign({}, DEFAULTS, data.content);
+          }
         }
-      } catch (e) {
-        /* fallback to defaults */
       }
+    } catch (e) {
+      /* fallback to defaults */
     }
     buildMarquee();
     setLang(currentLang);
@@ -717,8 +724,8 @@
 
   /* ============ Hero entrance trigger ============ */
   const addLoaded = () => document.body.classList.add("is-loaded");
-  if (document.readyState === "complete") addLoaded();
-  else window.addEventListener("load", addLoaded);
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", addLoaded);
+  else addLoaded();
 
   /* ============ Contact modal ============ */
   const contactModal = document.getElementById("contactModal");
