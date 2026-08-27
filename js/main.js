@@ -486,16 +486,8 @@
     const SOCIAL_LABELS = {
       "Email": { en: "Email", ru: "Почта" }
     };
-    if (links.children.length) {
-      CONTENT.footer.socials.forEach((s, i) => {
-        const el = links.children[i];
-        if (!el) return;
-        const label = (SOCIAL_LABELS[s.label] && SOCIAL_LABELS[s.label][currentLang]) || s.label;
-        if (el.dataset.busy !== "1") el.textContent = label;
-      });
-      return;
-    }
     const SAFE_SCHEMES = /^(https?:|mailto:|tel:)/i;
+    links.replaceChildren();
     CONTENT.footer.socials.forEach((s) => {
       const isEmail = s.label === "Email" || s.label.toLowerCase().includes("email") || s.url.startsWith("mailto:");
       const el = document.createElement(isEmail ? "button" : "a");

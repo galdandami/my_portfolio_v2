@@ -153,7 +153,7 @@ window.SITE_DEFAULTS = {
     copyright: { en: "© 2026 Danis Galiullin — Web Developer", ru: "© 2026 Данис Галиуллин — Веб-разработчик" },
     socials: [
       { label: "Max", url: "https://max.ru/89539997270" },
-      { label: "Telegram", url: "https://t.me" },
+      { label: "Telegram", url: "https://t.me/DaGa_it" },
       { label: "Email", url: "mailto:hello@danis.dev" }
     ]
   }
