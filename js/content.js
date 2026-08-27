@@ -65,7 +65,9 @@ window.SITE_DEFAULTS = {
     kicker: { en: "// Portfolio", ru: "// Портфолио" },
     title: { en: "Featured work", ru: "Избранные работы" },
     sub: { en: "A few projects I'm proud of", ru: "Несколько проектов, которыми я горжусь" },
-    all: { en: "All projects", ru: "Все проекты" }
+    all: { en: "All projects", ru: "Все проекты" },
+    detailsBtn: { en: "More details", ru: "Подробнее" },
+    view: { en: "Open project", ru: "Открыть проект" }
   },
 
   projects: [
@@ -75,8 +77,13 @@ window.SITE_DEFAULTS = {
         en: "E-commerce built with Next.js: cart, Stripe payments and a personal account. After the redesign, conversion grew by 32%.",
         ru: "E-commerce на Next.js: корзина, оплата через Stripe и личный кабинет. После редизайна конверсия выросла на 32%."
       },
+      details: {
+        en: "Full-cycle online store for a fashion brand: product catalog with filters, shopping cart, Stripe checkout and a customer account. Migrated the storefront to Next.js, which cut initial load time by 2.3x and pushed conversion up 32% after the redesign.",
+        ru: "Интернет-магазин полного цикла для модного бренда: каталог с фильтрами, корзина, оплата через Stripe и личный кабинет. Перевели витрину на Next.js — начальная загрузка ускорилась в 2,3 раза, а после редизайна конверсия выросла на 32%."
+      },
       tags: ["Next.js", "Stripe", "PostgreSQL"],
       image: "https://images.unsplash.com/photo-1657812159075-7f0abd98f7b8?q=80&w=800&auto=format&fit=crop",
+      gallery: [],
       url: ""
     },
     {
@@ -85,8 +92,13 @@ window.SITE_DEFAULTS = {
         en: "A real-time dashboard with reports and charts for 500+ users. Data updates without a page reload.",
         ru: "Дашборд реального времени с отчётами и графиками для 500+ пользователей. Данные обновляются без перезагрузки страницы."
       },
+      details: {
+        en: "Real-time analytics platform for SaaS teams: live dashboards, custom reports and interactive charts for 500+ active users. Built on a WebSocket pipeline, so numbers refresh instantly without reloading the page.",
+        ru: "Платформа аналитики реального времени для SaaS-команд: живые дашборды, кастомные отчёты и интерактивные графики для 500+ активных пользователей. Работает на WebSocket-пайплайне — цифры обновляются мгновенно без перезагрузки страницы."
+      },
       tags: ["React", "TypeScript", "D3.js"],
       image: "https://images.unsplash.com/photo-1745270917331-787c80129680?q=80&w=800&auto=format&fit=crop",
+      gallery: [],
       url: ""
     },
     {
@@ -95,8 +107,13 @@ window.SITE_DEFAULTS = {
         en: "A conversion-focused one-pager with animations and a dark theme. Performance — 98/100 on Lighthouse.",
         ru: "Продающий одностраничник с анимациями и тёмной темой. Производительность — 98/100 по Lighthouse."
       },
+      details: {
+        en: "One-pager for a startup launch: bold animations, dark theme and a clear conversion path from hero to contact form. Optimized to 98/100 on Lighthouse with fast loading on mobile.",
+        ru: "Одностраничник для запуска стартапа: выразительные анимации, тёмная тема и понятный путь конверсии от первого экрана до формы заявки. Оптимизирован до 98/100 по Lighthouse и быстро загружается на мобильных."
+      },
       tags: ["Next.js", "Tailwind", "Vercel"],
       image: "https://images.unsplash.com/photo-1763568258143-904ea924ac53?q=80&w=800&auto=format&fit=crop",
+      gallery: [],
       url: ""
     }
   ],

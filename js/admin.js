@@ -102,13 +102,23 @@
       "lbl.url": "URL",
       "lbl.value": "Value",
       "lbl.suffix": "Suffix",
-      "lbl.image": "Cover image URL",
+      "lbl.image": "Cover image",
+      "lbl.imageUrl": "Paste URL or upload a file",
+      "lbl.details": "Extended description",
+      "lbl.gallery": "Gallery",
       "lbl.tags": "Tags (comma separated)",
       "lbl.link": "Link (optional)",
       "lbl.items": "Items (one per line)",
       "lbl.kicker": "Kicker",
       "lbl.all": "\"All projects\" link",
       "lbl.email": "Email",
+      "upload.btn": "Upload image",
+      "upload.uploading": "Uploading...",
+      "upload.done": "Uploaded",
+      "upload.error": "Upload failed: {{msg}}",
+      "upload.limit": "Image is too large (max 5 MB)",
+      "btn.addPhoto": "+ Add photo",
+      "act.removePhoto": "Remove photo",
       "item.project": "Project {{n}}",
       "item.stat": "Stat {{n}}",
       "item.skill": "Group {{n}}",
@@ -223,13 +233,23 @@
       "lbl.url": "URL",
       "lbl.value": "Значение",
       "lbl.suffix": "Суффикс",
-      "lbl.image": "URL обложки",
+      "lbl.image": "Обложка",
+      "lbl.imageUrl": "Вставьте URL или загрузите файл",
+      "lbl.details": "Подробное описание",
+      "lbl.gallery": "Галерея",
       "lbl.tags": "Теги (через запятую)",
       "lbl.link": "Ссылка (необязательно)",
       "lbl.items": "Навыки (по одному в строке)",
       "lbl.kicker": "Корочка (kicker)",
       "lbl.all": "Ссылка «Все проекты»",
       "lbl.email": "Email",
+      "upload.btn": "Загрузить файл",
+      "upload.uploading": "Загрузка...",
+      "upload.done": "Загружено",
+      "upload.error": "Ошибка загрузки: {{msg}}",
+      "upload.limit": "Файл слишком большой (макс. 5 МБ)",
+      "btn.addPhoto": "+ Добавить фото",
+      "act.removePhoto": "Удалить фото",
       "item.project": "Проект {{n}}",
       "item.stat": "Показатель {{n}}",
       "item.skill": "Группа {{n}}",
@@ -401,24 +421,13 @@
       head.appendChild(title);
       head.appendChild(actions);
 
-      const imgField = document.createElement("div");
-      imgField.className = "field";
-      const imgLabel = document.createElement("span");
-      imgLabel.className = "field-label";
-      imgLabel.textContent = t("lbl.image");
-      const imgInput = document.createElement("input");
-      imgInput.type = "text";
-      imgInput.id = "f-proj-" + i + "-image";
-      imgInput.value = p.image;
-      imgInput.autocomplete = "off";
-      const preview = document.createElement("img");
-      preview.className = "img-preview" + (p.image ? " is-visible" : "");
-      preview.id = "preview-" + i;
-      preview.alt = "";
-      if (p.image) preview.src = p.image;
-      imgField.appendChild(imgLabel);
-      imgField.appendChild(imgInput);
-      imgField.appendChild(preview);
+      const imgField = buildImageField(
+        "f-proj-" + i + "-image",
+        p.image,
+        "preview-" + i,
+        "f-proj-" + i + "-image-status",
+        "f-proj-" + i + "-image-file"
+      );
 
       const rowTitle = fieldRow([
         fieldPair("title", "f-proj-" + i + "-title", p.title),
@@ -428,18 +437,184 @@
         fieldPair("desc", "f-proj-" + i + "-desc", p.desc, true),
       ]);
 
+      const rowDetails = fieldRow([
+        fieldPair("details", "f-proj-" + i + "-details", p.details || { en: "", ru: "" }, true),
+      ]);
+
       const rowMeta = fieldRow([
         fieldSingle("tags", "f-proj-" + i + "-tags", p.tags.join(", ")),
         fieldSingle("link", "f-proj-" + i + "-link", p.url),
       ]);
 
+      const galleryLabel = document.createElement("div");
+      galleryLabel.className = "edit-group-title";
+      galleryLabel.textContent = t("lbl.gallery");
+
+      const galleryList = document.createElement("div");
+      galleryList.className = "gallery-list";
+      galleryList.id = "f-proj-" + i + "-gallery";
+      (p.gallery || []).forEach((g, j) => galleryList.appendChild(buildGalleryItem(i, j, g)));
+
+      const addPhotoBtn = document.createElement("button");
+      addPhotoBtn.type = "button";
+      addPhotoBtn.className = "btn btn-outline btn-add";
+      addPhotoBtn.textContent = t("btn.addPhoto");
+      addPhotoBtn.addEventListener("click", () => {
+        if (!state.working.projects[i].gallery) state.working.projects[i].gallery = [];
+        state.working.projects[i].gallery.push("");
+        rerenderGallery(i);
+      });
+
       card.appendChild(head);
       card.appendChild(imgField);
       card.appendChild(rowTitle);
       card.appendChild(rowDesc);
+      card.appendChild(rowDetails);
       card.appendChild(rowMeta);
+      card.appendChild(galleryLabel);
+      card.appendChild(galleryList);
+      card.appendChild(addPhotoBtn);
       projectsList.appendChild(card);
     });
+  }
+
+  /* ============ Project image fields (URL + file upload) ============ */
+  function buildImageField(urlId, value, previewId, statusId, fileId) {
+    const field = document.createElement("div");
+    field.className = "field";
+    const label = document.createElement("span");
+    label.className = "field-label";
+    label.textContent = t("lbl.image");
+    const input = document.createElement("input");
+    input.type = "text";
+    input.id = urlId;
+    input.value = value || "";
+    input.autocomplete = "off";
+    field.appendChild(label);
+    field.appendChild(input);
+    field.appendChild(buildUploadRow(fileId, urlId, statusId, previewId));
+    const preview = document.createElement("img");
+    preview.className = "img-preview" + (value ? " is-visible" : "");
+    preview.id = previewId;
+    preview.alt = "";
+    if (value) preview.src = value;
+    field.appendChild(preview);
+    return field;
+  }
+
+  function buildGalleryItem(i, j, value) {
+    const item = document.createElement("div");
+    item.className = "gallery-item";
+    const thumb = document.createElement("img");
+    thumb.className = "gallery-thumb" + (value ? " is-visible" : "");
+    thumb.id = "f-proj-" + i + "-gal-" + j + "-preview";
+    thumb.alt = "";
+    if (value) thumb.src = value;
+    const body = document.createElement("div");
+    body.className = "gallery-body";
+    const input = document.createElement("input");
+    input.type = "text";
+    input.id = "f-proj-" + i + "-gal-" + j + "-url";
+    input.value = value || "";
+    input.autocomplete = "off";
+    input.placeholder = t("lbl.imageUrl");
+    const uploadRow = buildUploadRow(
+      "f-proj-" + i + "-gal-" + j + "-file",
+      "f-proj-" + i + "-gal-" + j + "-url",
+      "f-proj-" + i + "-gal-" + j + "-status",
+      "f-proj-" + i + "-gal-" + j + "-preview"
+    );
+    const remove = document.createElement("button");
+    remove.type = "button";
+    remove.className = "mini-btn is-danger";
+    remove.dataset.galRemove = "1";
+    remove.title = t("act.removePhoto");
+    remove.textContent = "×";
+    uploadRow.appendChild(remove);
+    body.appendChild(input);
+    body.appendChild(uploadRow);
+    item.appendChild(thumb);
+    item.appendChild(body);
+    return item;
+  }
+
+  function buildUploadRow(fileId, urlId, statusId, previewId) {
+    const row = document.createElement("div");
+    row.className = "upload-row";
+    const fileInput = document.createElement("input");
+    fileInput.type = "file";
+    fileInput.accept = "image/*";
+    fileInput.id = fileId;
+    fileInput.dataset.url = urlId;
+    fileInput.dataset.status = statusId;
+    fileInput.dataset.preview = previewId;
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "upload-btn";
+    btn.textContent = t("upload.btn");
+    btn.addEventListener("click", () => fileInput.click());
+    const status = document.createElement("span");
+    status.className = "upload-status";
+    status.id = statusId;
+    row.appendChild(btn);
+    row.appendChild(fileInput);
+    row.appendChild(status);
+    return row;
+  }
+
+  function rerenderGallery(i) {
+    const list = $("f-proj-" + i + "-gallery");
+    if (!list) return;
+    list.innerHTML = "";
+    (state.working.projects[i].gallery || []).forEach((g, j) => list.appendChild(buildGalleryItem(i, j, g)));
+  }
+
+  async function uploadImageFile(input) {
+    const file = input.files && input.files[0];
+    if (!file) return;
+    if (!window.supabaseClient) {
+      toast(t("toast.notconf"));
+      return;
+    }
+    const MAX_BYTES = 5 * 1024 * 1024;
+    if (file.size > MAX_BYTES) {
+      toast(t("upload.limit"));
+      return;
+    }
+    const statusEl = document.getElementById(input.dataset.status);
+    const safe = file.name.toLowerCase().replace(/[^a-z0-9.\-_]+/g, "-").replace(/-+/g, "-") || "image.jpg";
+    const path = "projects/" + Date.now() + "-" + safe;
+    if (statusEl) statusEl.textContent = t("upload.uploading");
+    try {
+      const { error } = await window.supabaseClient.storage
+        .from("project-images")
+        .upload(path, file, { contentType: file.type || "image/jpeg", cacheControl: "31536000", upsert: false });
+      if (error) throw error;
+      const { data } = window.supabaseClient.storage.from("project-images").getPublicUrl(path);
+      const url = data.publicUrl;
+      const urlInput = document.getElementById(input.dataset.url);
+      if (urlInput) urlInput.value = url;
+      const urlId = input.dataset.url;
+      const galMatch = urlId && urlId.match(/^f-proj-(\d+)-gal-(\d+)-url$/);
+      if (galMatch) {
+        const gi = Number(galMatch[1]);
+        const gj = Number(galMatch[2]);
+        const gallery = state.working.projects[gi].gallery || (state.working.projects[gi].gallery = []);
+        gallery[gj] = url;
+      }
+      const preview = document.getElementById(input.dataset.preview);
+      if (preview) {
+        preview.src = url;
+        preview.classList.add("is-visible");
+      }
+      if (statusEl) {
+        statusEl.textContent = t("upload.done");
+        setTimeout(() => { statusEl.textContent = ""; }, 2500);
+      }
+    } catch (err) {
+      if (statusEl) statusEl.textContent = "";
+      toast(t("upload.error", { msg: err.message || String(err) }));
+    }
   }
 
   /* ============ Repeaters: stats ============ */
@@ -627,11 +802,18 @@
   /* ============ Collect & fill ============ */
   function collectProjects() {
     return state.working.projects.map((p, i) => ({
-      title: { en: $(("f-proj-" + i + "-title-en")).value.trim(), ru: $("f-proj-" + i + "-title-ru").value.trim() },
+      title: { en: $("f-proj-" + i + "-title-en").value.trim(), ru: $("f-proj-" + i + "-title-ru").value.trim() },
       desc: { en: $("f-proj-" + i + "-desc-en").value.trim(), ru: $("f-proj-" + i + "-desc-ru").value.trim() },
       tags: $("f-proj-" + i + "-tags").value.split(",").map((s) => s.trim()).filter(Boolean),
       image: $("f-proj-" + i + "-image").value.trim(),
-      url: $("f-proj-" + i + "-link").value.trim()
+      url: $("f-proj-" + i + "-link").value.trim(),
+      details: {
+        en: $("f-proj-" + i + "-details-en").value.trim(),
+        ru: $("f-proj-" + i + "-details-ru").value.trim()
+      },
+      gallery: Array.from(projectsList.querySelectorAll('[id^="f-proj-' + i + '-gal-"][id$="-url"]'))
+        .map((inp) => inp.value.trim())
+        .filter(Boolean)
     }));
   }
 
@@ -852,6 +1034,17 @@
   }
 
   projectsList.addEventListener("click", (e) => {
+    const rmBtn = e.target.closest("[data-gal-remove]");
+    if (rmBtn) {
+      const card = rmBtn.closest(".item-card");
+      const i = Number(card.dataset.index);
+      const item = rmBtn.closest(".gallery-item");
+      const j = Array.prototype.indexOf.call(item.parentElement.children, item);
+      const gallery = state.working.projects[i].gallery || [];
+      gallery.splice(j, 1);
+      rerenderGallery(i);
+      return;
+    }
     const btn = e.target.closest("[data-act]");
     if (!btn) return;
     const card = btn.closest(".item-card");
@@ -885,14 +1078,46 @@
   });
 
   projectsList.addEventListener("input", (e) => {
-    if (e.target.id && e.target.id.startsWith("f-proj-") && e.target.id.endsWith("-image")) {
-      const i = Number(e.target.id.slice("f-proj-".length, -"-image".length));
+    const id = e.target.id || "";
+    if (id.startsWith("f-proj-") && id.endsWith("-image")) {
+      const i = Number(id.slice("f-proj-".length, -"-image".length));
       const preview = $("preview-" + i);
       if (preview) {
         preview.src = e.target.value.trim();
         preview.classList.toggle("is-visible", Boolean(e.target.value.trim()));
       }
+      return;
     }
+    const galMatch = id.match(/^f-proj-(\d+)-gal-(\d+)-url$/);
+    if (galMatch) {
+      const i = Number(galMatch[1]);
+      const j = Number(galMatch[2]);
+      const gallery = state.working.projects[i].gallery || (state.working.projects[i].gallery = []);
+      gallery[j] = e.target.value.trim();
+      const thumb = document.getElementById("f-proj-" + i + "-gal-" + j + "-preview");
+      if (thumb) {
+        const v = e.target.value.trim();
+        thumb.src = v;
+        thumb.classList.toggle("is-visible", Boolean(v));
+      }
+      return;
+    }
+    const detMatch = id.match(/^f-proj-(\d+)-details-(en|ru)$/);
+    if (detMatch) {
+      const i = Number(detMatch[1]);
+      const lang = detMatch[2];
+      const details = state.working.projects[i].details || (state.working.projects[i].details = { en: "", ru: "" });
+      details[lang] = e.target.value;
+    }
+  });
+
+  projectsList.addEventListener("change", (e) => {
+    if (!e.target.matches('input[type="file"]')) return;
+    const input = e.target;
+    if (input.files && input.files.length) {
+      uploadImageFile(input);
+    }
+    input.value = "";
   });
 
   $("addProjectBtn").addEventListener("click", () => {
@@ -901,7 +1126,9 @@
       desc: { en: "", ru: "" },
       tags: [],
       image: "",
-      url: ""
+      url: "",
+      details: { en: "", ru: "" },
+      gallery: []
     });
     fill(state.working);
   });
@@ -960,7 +1187,9 @@
         desc: normPair(p && p.desc, { en: "", ru: "" }),
         tags: Array.isArray(p && p.tags) ? p.tags.map(String) : [],
         image: p && typeof p.image === "string" ? p.image : "",
-        url: p && typeof p.url === "string" ? p.url : ""
+        url: p && typeof p.url === "string" ? p.url : "",
+        details: normPair(p && p.details, { en: "", ru: "" }),
+        gallery: Array.isArray(p && p.gallery) ? p.gallery.map(String) : []
       })) : deepCopy(d.projects),
       skills: {
         kicker: normPair(c.skills && c.skills.kicker, d.skills.kicker),

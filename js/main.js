@@ -360,6 +360,7 @@
   function renderProjects() {
     const grid = document.getElementById("projectsGrid");
     if (!grid) return;
+    const detailsLabel = (CONTENT.proj.detailsBtn && CONTENT.proj.detailsBtn[currentLang]) || "More details";
     if (grid.children.length) {
       CONTENT.projects.forEach((p, i) => {
         const card = grid.children[i];
@@ -368,6 +369,8 @@
         const descEl = card.querySelector(".card-desc");
         if (titleEl) titleEl.textContent = p.title[currentLang];
         if (descEl) descEl.textContent = p.desc[currentLang];
+        const detailsBtn = card.querySelector(".project-details-btn");
+        if (detailsBtn) detailsBtn.textContent = detailsLabel;
       });
       return;
     }
@@ -404,8 +407,24 @@
       content.appendChild(desc);
       content.appendChild(tags);
 
+      const actions = document.createElement("div");
+      actions.className = "card-actions";
+      const detailsBtn = document.createElement("button");
+      detailsBtn.type = "button";
+      detailsBtn.className = "btn btn-outline btn-sm project-details-btn";
+      detailsBtn.textContent = detailsLabel;
+      detailsBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        openProjectModal(i);
+      });
+      actions.appendChild(detailsBtn);
+      content.appendChild(actions);
+
       if (p.url && /^https?:\/\//i.test(p.url)) {
-        card.addEventListener("click", () => window.open(p.url, "_blank", "noopener"));
+        card.addEventListener("click", (e) => {
+          if (e.target.closest(".project-details-btn")) return;
+          window.open(p.url, "_blank", "noopener");
+        });
       }
 
       card.appendChild(cover);
@@ -664,6 +683,21 @@
   initReveal();
   initCounters();
 
+  function deepMerge(base, override) {
+    const out = Object.assign({}, base);
+    for (const k of Object.keys(override || {})) {
+      const bv = base && base[k];
+      const ov = override[k];
+      if (ov && typeof ov === "object" && !Array.isArray(ov) &&
+          bv && typeof bv === "object" && !Array.isArray(bv)) {
+        out[k] = deepMerge(bv, ov);
+      } else {
+        out[k] = ov;
+      }
+    }
+    return out;
+  }
+
   async function init() {
     try {
       const url = window.SB_CONFIG && window.SB_CONFIG.url;
@@ -679,7 +713,7 @@
           const rows = await res.json();
           const data = Array.isArray(rows) && rows[0];
           if (data && data.content && typeof data.content === "object" && Object.keys(data.content).length > 0) {
-            CONTENT = Object.assign({}, DEFAULTS, data.content);
+            CONTENT = deepMerge(DEFAULTS, data.content);
           }
         }
       }
@@ -781,6 +815,81 @@
     } catch (err) {
       window.location.href = "mailto:" + email;
     }
+  });
+
+  /* ============ Project details modal ============ */
+  const projectModal = document.getElementById("projectModal");
+
+  function openProjectModal(i) {
+    const p = CONTENT.projects[i];
+    if (!p || !projectModal) return;
+    const title = (p.title && p.title[currentLang]) || "";
+    document.getElementById("projectModalTitle").textContent = title;
+    const img = document.getElementById("projectModalImage");
+    img.src = p.image || "";
+    img.alt = title;
+
+    const tags = document.getElementById("projectModalTags");
+    tags.replaceChildren();
+    (p.tags || []).forEach((tag) => {
+      const s = document.createElement("span");
+      s.className = "tag";
+      s.textContent = tag;
+      tags.appendChild(s);
+    });
+
+    document.getElementById("projectModalDesc").textContent =
+      (p.details && p.details[currentLang]) || (p.desc && p.desc[currentLang]) || "";
+
+    const gallery = document.getElementById("projectModalGallery");
+    gallery.replaceChildren();
+    const images = Array.isArray(p.gallery) ? p.gallery.filter(Boolean) : [];
+    if (images.length) {
+      images.forEach((src, j) => {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "project-modal-thumb" + (j === 0 ? " is-active" : "");
+        btn.setAttribute("aria-label", title);
+        const thumbImg = document.createElement("img");
+        thumbImg.src = src;
+        thumbImg.alt = "";
+        thumbImg.loading = "lazy";
+        btn.appendChild(thumbImg);
+        btn.addEventListener("click", () => {
+          document.getElementById("projectModalImage").src = src;
+          gallery.querySelectorAll(".project-modal-thumb").forEach((t) => t.classList.remove("is-active"));
+          btn.classList.add("is-active");
+        });
+        gallery.appendChild(btn);
+      });
+    }
+
+    const link = document.getElementById("projectModalLink");
+    if (p.url && /^https?:\/\//i.test(p.url)) {
+      link.href = p.url;
+      link.hidden = false;
+      link.textContent = (CONTENT.proj.view && CONTENT.proj.view[currentLang]) || "Open project";
+    } else {
+      link.hidden = true;
+      link.removeAttribute("href");
+    }
+
+    projectModal.classList.add("is-open");
+    projectModal.setAttribute("aria-hidden", "false");
+    document.body.classList.add("modal-open");
+  }
+
+  function closeProjectModal() {
+    if (!projectModal) return;
+    projectModal.classList.remove("is-open");
+    projectModal.setAttribute("aria-hidden", "true");
+    document.body.classList.remove("modal-open");
+  }
+
+  const projectModalClose = document.getElementById("projectModalClose");
+  if (projectModalClose) projectModalClose.addEventListener("click", closeProjectModal);
+  if (projectModal) projectModal.addEventListener("click", (e) => {
+    if (e.target === projectModal) closeProjectModal();
   });
 
   function escapeHtml(str) {
@@ -899,7 +1008,10 @@
   });
   if (contactForm) contactForm.addEventListener("submit", handleContactSubmit);
   document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape") closeContactModal();
+    if (e.key === "Escape") {
+      closeProjectModal();
+      closeContactModal();
+    }
   });
 
   init();

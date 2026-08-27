@@ -11,7 +11,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
   <noscript><link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"></noscript>
-  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/styles.css?v=3">
   <script>document.documentElement.classList.add("js");</script>
 </head>
 <body>
@@ -326,6 +326,28 @@
     </div>
   </div>
 
+  <!-- PROJECT DETAILS MODAL -->
+  <div class="modal-backdrop" id="projectModal" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="projectModalTitle">
+    <div class="project-modal" role="document">
+      <button class="contact-modal-close" id="projectModalClose" aria-label="Close modal" data-i18n-aria="modal.close">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+          <path d="M18 6 6 18"></path>
+          <path d="m6 6 12 12"></path>
+        </svg>
+      </button>
+      <div class="project-modal-cover">
+        <img id="projectModalImage" alt="">
+      </div>
+      <div class="project-modal-content">
+        <h2 class="project-modal-title" id="projectModalTitle"></h2>
+        <div class="tags" id="projectModalTags"></div>
+        <p class="project-modal-desc" id="projectModalDesc"></p>
+        <div class="project-modal-gallery" id="projectModalGallery"></div>
+        <a class="btn btn-outline project-modal-link" id="projectModalLink" target="_blank" rel="noopener" hidden></a>
+      </div>
+    </div>
+  </div>
+
   <footer class="footer">
     <div class="container footer-inner">
       <span class="copyright" id="footerCopy" data-i18n="footer.copyright">© 2026 Danis Galiullin — Web Developer</span>
@@ -337,8 +359,8 @@
     </div>
   </footer>
 
-  <script src="js/config.js?v=22"></script>
-  <script src="js/content.js?v=22"></script>
-  <script src="js/main.js?v=22"></script>
+  <script src="js/config.js?v=23"></script>
+  <script src="js/content.js?v=23"></script>
+  <script src="js/main.js?v=23"></script>
 </body>
 </html>

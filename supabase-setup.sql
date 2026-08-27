@@ -52,3 +52,62 @@ on conflict (id) do nothing;
 --  The admin panel signs in with Supabase Auth; the
 --  password is stored by Supabase, not in the code.
 -- =====================================================
+
+-- =====================================================
+--  Storage bucket for project images
+--  Lets the admin panel upload photos from a file, not
+--  only by URL. Run this ONCE in the SQL Editor too.
+--
+--  Run the two blocks below:
+--   1) the bucket INSERT
+--   2) the RLS policies for storage.objects
+-- =====================================================
+
+-- 1) Create a public bucket (5 MB per file, images only)
+insert into storage.buckets (id, name, public, file_size_limit, allowed_mime_types)
+values (
+  'project-images',
+  'project-images',
+  true,
+  5242880,
+  array['image/png', 'image/jpeg', 'image/webp', 'image/gif', 'image/svg+xml', 'image/avif']
+)
+on conflict (id) do nothing;
+
+-- 2) Policies for storage.objects
+
+-- Public read (the portfolio site needs to show the images)
+drop policy if exists "project_images_public_read" on storage.objects;
+create policy "project_images_public_read" on storage.objects
+  for select using (bucket_id = 'project-images');
+
+-- Upload only by the site owner (admin email)
+drop policy if exists "project_images_owner_insert" on storage.objects;
+create policy "project_images_owner_insert" on storage.objects
+  for insert to authenticated
+  with check (
+    bucket_id = 'project-images'
+    and (auth.jwt() ->> 'email') = 'galdandami@gmail.com'
+  );
+
+-- Allow the owner to overwrite / update objects
+drop policy if exists "project_images_owner_update" on storage.objects;
+create policy "project_images_owner_update" on storage.objects
+  for update to authenticated
+  using (
+    bucket_id = 'project-images'
+    and (auth.jwt() ->> 'email') = 'galdandami@gmail.com'
+  )
+  with check (
+    bucket_id = 'project-images'
+    and (auth.jwt() ->> 'email') = 'galdandami@gmail.com'
+  );
+
+-- Allow the owner to delete objects
+drop policy if exists "project_images_owner_delete" on storage.objects;
+create policy "project_images_owner_delete" on storage.objects
+  for delete to authenticated
+  using (
+    bucket_id = 'project-images'
+    and (auth.jwt() ->> 'email') = 'galdandami@gmail.com'
+  );
