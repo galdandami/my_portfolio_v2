@@ -453,7 +453,7 @@
       const galleryList = document.createElement("div");
       galleryList.className = "gallery-list";
       galleryList.id = "f-proj-" + i + "-gallery";
-      (p.gallery || []).forEach((g, j) => galleryList.appendChild(buildGalleryItem(i, j, g)));
+      (p.gallery || []).forEach((g, j, arr) => galleryList.appendChild(buildGalleryItem(i, j, g, arr.length)));
 
       const addPhotoBtn = document.createElement("button");
       addPhotoBtn.type = "button";
@@ -502,7 +502,7 @@
     return field;
   }
 
-  function buildGalleryItem(i, j, value) {
+  function buildGalleryItem(i, j, value, total) {
     const item = document.createElement("div");
     item.className = "gallery-item";
     const thumb = document.createElement("img");
@@ -524,12 +524,28 @@
       "f-proj-" + i + "-gal-" + j + "-status",
       "f-proj-" + i + "-gal-" + j + "-preview"
     );
+    const up = document.createElement("button");
+    up.type = "button";
+    up.className = "mini-btn";
+    up.dataset.galMove = "-1";
+    up.title = t("act.up");
+    up.textContent = "↑";
+    up.disabled = j === 0;
+    const down = document.createElement("button");
+    down.type = "button";
+    down.className = "mini-btn";
+    down.dataset.galMove = "1";
+    down.title = t("act.down");
+    down.textContent = "↓";
+    down.disabled = total != null && j >= total - 1;
     const remove = document.createElement("button");
     remove.type = "button";
     remove.className = "mini-btn is-danger";
     remove.dataset.galRemove = "1";
     remove.title = t("act.removePhoto");
     remove.textContent = "×";
+    uploadRow.appendChild(up);
+    uploadRow.appendChild(down);
     uploadRow.appendChild(remove);
     body.appendChild(input);
     body.appendChild(uploadRow);
@@ -566,7 +582,7 @@
     const list = $("f-proj-" + i + "-gallery");
     if (!list) return;
     list.innerHTML = "";
-    (state.working.projects[i].gallery || []).forEach((g, j) => list.appendChild(buildGalleryItem(i, j, g)));
+    (state.working.projects[i].gallery || []).forEach((g, j, arr) => list.appendChild(buildGalleryItem(i, j, g, arr.length)));
   }
 
   async function uploadImageFile(input) {
@@ -1034,6 +1050,17 @@
   }
 
   projectsList.addEventListener("click", (e) => {
+    const mv = e.target.closest("[data-gal-move]");
+    if (mv) {
+      const card = mv.closest(".item-card");
+      const i = Number(card.dataset.index);
+      const item = mv.closest(".gallery-item");
+      const j = Array.prototype.indexOf.call(item.parentElement.children, item);
+      const gallery = state.working.projects[i].gallery || [];
+      moveItem(gallery, j, Number(mv.dataset.galMove));
+      rerenderGallery(i);
+      return;
+    }
     const rmBtn = e.target.closest("[data-gal-remove]");
     if (rmBtn) {
       const card = rmBtn.closest(".item-card");
