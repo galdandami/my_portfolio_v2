@@ -292,6 +292,8 @@
     document.querySelectorAll("[data-i18n]").forEach((el) => {
       el.textContent = t(el.dataset.i18n);
     });
+    const floatSave = document.getElementById("floatSaveBtn");
+    if (floatSave) { floatSave.title = t("btn.save"); floatSave.setAttribute("aria-label", t("btn.save")); }
     langBtns.forEach((b) => b.classList.toggle("is-active", b.dataset.lang === lang));
     state.working = collect();
     fill(state.working);
@@ -1277,9 +1279,11 @@
   /* ============ Load & save ============ */
   const saveBtn = $("saveBtn");
   const saveLabel = $("saveLabel");
+  const floatSaveBtn = $("floatSaveBtn");
 
   function setSaveState(saving) {
     saveBtn.disabled = saving;
+    if (floatSaveBtn) floatSaveBtn.disabled = saving;
     saveLabel.textContent = t(saving ? "btn.saving" : "btn.save");
   }
 
@@ -1342,6 +1346,7 @@
   }
 
   saveBtn.addEventListener("click", save);
+  if (floatSaveBtn) floatSaveBtn.addEventListener("click", save);
 
   $("resetBtn").addEventListener("click", () => {
     askConfirm("confirm.reset", () => {
