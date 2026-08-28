@@ -302,6 +302,13 @@ svg { display: block; }
   align-items: flex-end;
   justify-content: space-between;
   gap: 24px;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  margin: -24px -32px 0;
+  padding: 14px 32px 12px;
+  background: var(--bg);
+  border-bottom: 1px solid var(--border-subtle);
 }
 
 .page-title-col { display: flex; flex-direction: column; gap: 2px; }
@@ -769,7 +776,7 @@ svg { display: block; }
   .status-chip { display: none; }
   .btn-logout span { display: none; }
   .btn-logout { padding: 8px; }
-  .page-header { flex-direction: column; align-items: flex-start; gap: 16px; }
+  .page-header { flex-direction: column; align-items: flex-start; gap: 16px; margin: -20px -16px 16px; padding: 12px 16px 14px; }
   .header-actions { width: 100%; }
   .header-actions .btn { flex: 1; }
   .field-row { grid-template-columns: 1fr; }
