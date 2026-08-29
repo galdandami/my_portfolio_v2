@@ -1124,8 +1124,10 @@ body.modal-open { overflow: hidden; }
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
-  margin-top: 20px;
+  padding: 14px 30px 0;
 }
+
+.project-modal-gallery:empty { display: none; }
 
 .project-modal-thumb {
   width: 104px;
@@ -1154,6 +1156,7 @@ body.modal-open { overflow: hidden; }
 
 @media (max-width: 640px) {
   .project-modal-content { padding: 22px 20px 26px; }
+  .project-modal-gallery { padding: 12px 20px 0; }
   .project-modal-title { font-size: 21px; }
 }
 
