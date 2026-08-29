@@ -684,7 +684,7 @@ button { font: inherit; background: none; border: none; cursor: pointer; }
 .card-cover img {
   width: 100%;
   height: 100%;
-  object-fit: contain;
+  object-fit: cover;
   transition: transform 0.7s var(--ease-out), filter 0.5s ease;
   filter: saturate(0.92) brightness(0.88);
 }
@@ -1100,7 +1100,7 @@ body.modal-open { overflow: hidden; }
 .project-modal-cover img {
   width: 100%;
   height: 100%;
-  object-fit: contain;
+  object-fit: cover;
   display: block;
 }
 
@@ -1144,7 +1144,7 @@ body.modal-open { overflow: hidden; }
 .project-modal-thumb img {
   width: 100%;
   height: 100%;
-  object-fit: contain;
+  object-fit: cover;
   display: block;
 }
 
